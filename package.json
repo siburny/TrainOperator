@@ -1,0 +1,19 @@
+{
+  "name": "TrainOperator",
+  "version": "0.0.1",
+  "description": "Model railroad train control system",
+  "main": "_objects.list-bare.scss",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inuitcss/objects.list-bare.git"
+  },
+  "author": "Maxim Rubis <siburny@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/siburny/TrainOperator/issues"
+  },
+  "homepage": "https://github.com/siburny/TrainOperator",
+  "license": "CC-BY-NC-SA-4.0",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}

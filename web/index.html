@@ -9,6 +9,7 @@
 	<script src="js/jquery-2.1.4.min.js"></script>
 	<script src="js/raphael.pan-zoom.js"></script>
 	<script src="js/track.js"></script>
+	<script src="js/straightTrack.js"></script>
 	<script src="js/layout.js"></script>
 	<link rel="stylesheet" type="text/css" src="/css/raphael.pan-zoom.css" />
 	<style>
@@ -30,7 +31,7 @@
 	
 	var sizeit = function() {
 		paper.setSize($(window).width(), $(window).height());
-		paper.panzoom({ initialZoom: 2, initialPosition: { x: 0, y: 0} }).enable();
+		paper.panzoom({ initialZoom: 2, initialPosition: { x: -200, y: -200} }).enable();
 	}
 	$(function() {
 		sizeit();
@@ -38,10 +39,13 @@
 	});
 	
 	var layout = new Layout(paper);
-	var t1 = new Track(TRACK_TYPE.STRAIGHT, {l: 10});
+	layout.ShowGrid();	
+	
+	var t1 = new StraightTrack({x:200, y:200, r:45, l: 10});
 	layout.AddTrack(t1);
-	var t2 = new Track(TRACK_TYPE.CURVE, {r:36});
-	layout.AddTrack(t2);
+
+	//var t2 = new Track(TRACK_TYPE.CURVE, {r:36, a:30});
+	//layout.AddTrack(t2);
 	
 	//t1.moveTo(0,100);
 	//t2.moveTo(100,300);

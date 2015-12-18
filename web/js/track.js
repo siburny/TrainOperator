@@ -1,3 +1,4 @@
+/* global $ */
 var TRACK_TYPE = Object.freeze({
 	STRAIGHT: 1,
 	CURVE: 2
@@ -5,35 +6,24 @@ var TRACK_TYPE = Object.freeze({
 var INCH_TO_PIXEL = 20;
 var TRACK_WIDTH = 1*INCH_TO_PIXEL;
 
-function Track(type, options) {
-	if (type in TRACK_TYPE) {
-		throw new Error("Invalid track type.");
-	}
-	
-	var defaults = {
+function Track() {
+	this.options = {
 		x: 0,
 		y: 0,
-		l: 1,
-		r: 1
+		r: 0
 	};
-
-	if(options != undefined) {
-		$.extend(defaults, options)
-	}
 	
-	this.type = type;
-	this.x = defaults.x;
-	this.y = defaults.y;
-	this.l = defaults.l;
-	this.r = defaults.r;
-	this.a = defaults.a;
-	this.a = defaults.a
-	
-	this.image = paper.set();
 	this.connections = [];
 }
 
 Track.prototype.draw = function (paper) {
+	if(this.image != undefined)
+		this.image.remove();
+	this.image = paper.set();
+	
+	this.image.push(paper.circle(0, 0, 5).attr({"stroke":"#fff","fill":"#aaa"}));
+	this.image.push(paper.text(0,-20,"Missing image").attr({"fill":"#aaa","font-size": 16}));
+	/*
 	var track = [];
 	if(this.type == TRACK_TYPE.STRAIGHT) {
 		track = _getStraightTrackPath(this.l*INCH_TO_PIXEL);
@@ -41,35 +31,30 @@ Track.prototype.draw = function (paper) {
 		track = _getCurveTrackPath(this.r*INCH_TO_PIXEL, 22.5);
 	}
 	
+	if(this.image == undefined)
+		this.image = paper.set();
+
 	var path = paper.path(track).attr({ stroke: '#CCC', fill: '#888' });
 	this.image.push(path);
-	this.image.push(path.glow({ color: '#FFF', width: 2 }));
-	
+	//this.image.push(path.glow({ color: '#FFF', width: 2 }));
+	*/
 }
 
-Track.prototype.moveTo = function(x, y) {
-	this.x = x;
-	this.y = y;
+Track.prototype.moveTo = function(x, y, r) {
+	this.options.x = x;
+	this.options.y = y;
 	this.image.transform(["t",x,y]);
 }
 
-Track.prototype.getAnchor = function() {
+function _getAnchor(r, a1, a2) {
 	if(this.type == TRACK_TYPE.STRAIGHT) {
 		return [
 			{ dx: 0, dy: this.l/2 },
 			{ dx: 0, dy: this.l/2 }
 		];
 	}
-	var a1 = -this.a/2,
-		a2 = this.a;
-	return { dx: r * Math.cos(a1 * Math.PI / 180) - r * Math.cos((a1 + a2/2) * Math.PI / 180),
-			 dy: r * Math.sin(a1 * Math.PI / 180) - r * Math.sin((a1 + a2/2) * Math.PI / 180) };
-}
-
-
-
-function _getStraightTrackPath(l) {
-	return ["M",-TRACK_WIDTH/2,l/2,"l", 0, -l, "l", TRACK_WIDTH, 0, "l", 0, l, "l", -TRACK_WIDTH, 0];
+	return [{ dx: r * Math.cos(a1 * Math.PI / 180) - r * Math.cos((a1 + a2/2) * Math.PI / 180),
+			 dy: r * Math.sin(a1 * Math.PI / 180) - r * Math.sin((a1 + a2/2) * Math.PI / 180) }];
 }
 
 function _arcPath(r, a1, a2) {
