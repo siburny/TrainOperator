@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<layout bitmap="C:\Downloads\loop2.jpg" widthBMP="3150" heightBMP="3150" scaleX="0.0793651" scaleY="0.0793651" width="6300" height="6300" >
+<parts>
+<part type="Curve" >
+<endpointNrs><endpointNr>1</endpointNr>
+<endpointNr>2</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3205,1504" pt2="3494,1427" direction="270" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>3</endpointNr>
+<endpointNr>4</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3494,1427" pt2="3704,1216" direction="300" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>5</endpointNr>
+<endpointNr>6</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3704,516" pt2="3494,305" direction="30" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>7</endpointNr>
+<endpointNr>8</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3494,305" pt2="3205,228" direction="60" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>9</endpointNr>
+<endpointNr>10</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="2875,294" pt2="2594,481" direction="112" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>11</endpointNr>
+<endpointNr>12</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2594,481" pt2="2368,708" />
+</drawing>
+</part>
+<part type="LeftRegularTurnout" >
+<endpointNrs><endpointNr>13</endpointNr>
+<endpointNr>14</endpointNr>
+<endpointNr>15</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="3205,228" pt2="2885,228" />
+<arc width="3.2cm" pt1="3205,228" pt2="2875,294" direction="90" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>16</endpointNr>
+<endpointNr>17</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2565,228" pt2="2885,228" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>18</endpointNr>
+<endpointNr>19</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1534,228" pt2="1854,228" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>20</endpointNr>
+<endpointNr>21</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2174,228" pt2="2350,228" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>22</endpointNr>
+<endpointNr>23</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2525,228" pt2="2565,228" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>24</endpointNr>
+<endpointNr>25</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1854,228" pt2="2174,228" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>26</endpointNr>
+<endpointNr>27</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="3782,924" pt2="3782,884" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>28</endpointNr>
+<endpointNr>29</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="3782,844" pt2="3782,804" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>30</endpointNr>
+<endpointNr>31</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="2594,1251" pt2="2875,1438" direction="225" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="RightRegularTurnout" >
+<endpointNrs><endpointNr>32</endpointNr>
+<endpointNr>33</endpointNr>
+<endpointNr>34</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="3205,1504" pt2="2885,1504" />
+<arc width="3.2cm" pt1="2875,1438" pt2="3205,1504" direction="247" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>35</endpointNr>
+<endpointNr>36</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2594,1251" pt2="2368,1024" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>37</endpointNr>
+<endpointNr>38</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="3782,884" pt2="3782,844" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>39</endpointNr>
+<endpointNr>40</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3782,804" pt2="3704,516" direction="360" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>41</endpointNr>
+<endpointNr>42</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2349,228" pt2="2525,228" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>43</endpointNr>
+<endpointNr>44</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="3704,1216" pt2="3782,928" direction="330" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>45</endpointNr>
+<endpointNr>46</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2349,1504" pt2="2525,1504" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>47</endpointNr>
+<endpointNr>48</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2525,1504" pt2="2565,1504" />
+</drawing>
+</part>
+<part type="RightRegularTurnout" >
+<endpointNrs><endpointNr>49</endpointNr>
+<endpointNr>50</endpointNr>
+<endpointNr>51</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1214,228" pt2="1534,228" />
+<arc width="3.2cm" pt1="1545,294" pt2="1214,228" direction="67" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>52</endpointNr>
+<endpointNr>53</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2174,1504" pt2="2350,1504" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>54</endpointNr>
+<endpointNr>55</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="1214,228" pt2="926,305" direction="90" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>56</endpointNr>
+<endpointNr>57</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1534,1504" pt2="1854,1504" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>58</endpointNr>
+<endpointNr>59</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2565,1504" pt2="2885,1504" />
+</drawing>
+</part>
+<part type="LeftRegularTurnout" >
+<endpointNrs><endpointNr>60</endpointNr>
+<endpointNr>61</endpointNr>
+<endpointNr>62</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1214,1504" pt2="1534,1504" />
+<arc width="3.2cm" pt1="1214,1504" pt2="1545,1438" direction="270" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>63</endpointNr>
+<endpointNr>64</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1854,1504" pt2="2174,1504" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>65</endpointNr>
+<endpointNr>66</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="715,516" pt2="638,804" direction="150" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>67</endpointNr>
+<endpointNr>68</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="926,305" pt2="715,516" direction="120" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>69</endpointNr>
+<endpointNr>70</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="715,1216" pt2="926,1427" direction="210" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>71</endpointNr>
+<endpointNr>72</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="638,928" pt2="715,1216" direction="180" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>73</endpointNr>
+<endpointNr>74</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="1825,481" pt2="1545,294" direction="45" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>75</endpointNr>
+<endpointNr>76</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1825,481" pt2="2051,708" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>77</endpointNr>
+<endpointNr>78</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="1825,1251" pt2="2051,1024" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>79</endpointNr>
+<endpointNr>80</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="1545,1438" pt2="1825,1251" direction="292" angle="23" radius="864" />
+</drawing>
+</part>
+<part type="Curve" >
+<endpointNrs><endpointNr>81</endpointNr>
+<endpointNr>82</endpointNr>
+</endpointNrs>
+<drawing><arc width="3.2cm" pt1="926,1427" pt2="1214,1504" direction="240" angle="30" radius="576" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>83</endpointNr>
+<endpointNr>84</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="638,884" pt2="638,844" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>85</endpointNr>
+<endpointNr>86</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="638,844" pt2="638,804" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>87</endpointNr>
+<endpointNr>88</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="638,924" pt2="638,884" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>89</endpointNr>
+<endpointNr>90</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2340,736" pt2="2368,708" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>91</endpointNr>
+<endpointNr>92</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2051,1024" pt2="2176,900" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>93</endpointNr>
+<endpointNr>94</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2300,776" pt2="2340,736" />
+</drawing>
+</part>
+<part type="Straight" >
+<endpointNrs><endpointNr>95</endpointNr>
+<endpointNr>96</endpointNr>
+</endpointNrs>
+<drawing><line width="3.2cm" pt1="2176,900" pt2="2300,776" />
+</drawing>
+</part>
+</parts>
+<connections><connection endpoint1="2" endpoint2="3" />
+<connection endpoint1="11" endpoint2="10" />
+<connection endpoint1="6" endpoint2="7" />
+<connection endpoint1="9" endpoint2="15" />
+<connection endpoint1="42" endpoint2="23" />
+<connection endpoint1="22" endpoint2="17" />
+<connection endpoint1="21" endpoint2="25" />
+<connection endpoint1="24" endpoint2="19" />
+<connection endpoint1="41" endpoint2="20" />
+<connection endpoint1="34" endpoint2="31" />
+<connection endpoint1="30" endpoint2="35" />
+<connection endpoint1="28" endpoint2="38" />
+<connection endpoint1="1" endpoint2="33" />
+<connection endpoint1="37" endpoint2="26" />
+<connection endpoint1="13" endpoint2="8" />
+<connection endpoint1="29" endpoint2="40" />
+<connection endpoint1="44" endpoint2="27" />
+<connection endpoint1="50" endpoint2="55" />
+<connection endpoint1="18" endpoint2="51" />
+<connection endpoint1="14" endpoint2="16" />
+<connection endpoint1="45" endpoint2="47" />
+<connection endpoint1="46" endpoint2="53" />
+<connection endpoint1="63" endpoint2="56" />
+<connection endpoint1="52" endpoint2="64" />
+<connection endpoint1="57" endpoint2="62" />
+<connection endpoint1="48" endpoint2="58" />
+<connection endpoint1="59" endpoint2="32" />
+<connection endpoint1="67" endpoint2="54" />
+<connection endpoint1="70" endpoint2="71" />
+<connection endpoint1="65" endpoint2="68" />
+<connection endpoint1="60" endpoint2="80" />
+<connection endpoint1="74" endpoint2="49" />
+<connection endpoint1="75" endpoint2="73" />
+<connection endpoint1="79" endpoint2="77" />
+<connection endpoint1="82" endpoint2="69" />
+<connection endpoint1="39" endpoint2="5" />
+<connection endpoint1="84" endpoint2="87" />
+<connection endpoint1="81" endpoint2="61" />
+<connection endpoint1="86" endpoint2="83" />
+<connection endpoint1="85" endpoint2="66" />
+<connection endpoint1="4" endpoint2="43" />
+<connection endpoint1="72" endpoint2="88" />
+<connection endpoint1="94" endpoint2="96" />
+<connection endpoint1="90" endpoint2="93" />
+<connection endpoint1="12" endpoint2="89" />
+<connection endpoint1="91" endpoint2="78" />
+<connection endpoint1="95" endpoint2="92" />
+</connections>
+<endpoints><endpoint nr="5" coord="3704,516,0" direction="210"  />
+<endpoint nr="6" coord="3494,305,0" direction="60"  />
+<endpoint nr="3" coord="3494,1427,0" direction="120"  />
+<endpoint nr="4" coord="3704,1216,0" direction="330"  />
+<endpoint nr="7" coord="3494,305,0" direction="240"  />
+<endpoint nr="9" coord="2875,294,0" direction="292"  />
+<endpoint nr="11" coord="2594,481,0" direction="315"  />
+<endpoint nr="12" coord="2368,708,0" direction="135"  />
+<endpoint nr="13" coord="3205,228,0" direction="270"  />
+<endpoint nr="14" coord="2885,228,0" direction="90"  />
+<endpoint nr="10" coord="2594,481,0" direction="135"  />
+<endpoint nr="15" coord="2875,294,0" direction="112"  />
+<endpoint nr="32" coord="2885,1504,0" direction="90"  />
+<endpoint nr="8" coord="3205,228,0" direction="90"  />
+<endpoint nr="33" coord="3205,1504,0" direction="270"  />
+<endpoint nr="34" coord="2875,1438,0" direction="67"  />
+<endpoint nr="1" coord="3205,1504,0" direction="90"  />
+<endpoint nr="2" coord="3494,1427,0" direction="300"  />
+<endpoint nr="49" coord="1545,294,0" direction="247"  />
+<endpoint nr="16" coord="2885,228,0" direction="270"  />
+<endpoint nr="22" coord="2565,228,0" direction="270"  />
+<endpoint nr="24" coord="1854,228,0" direction="90"  />
+<endpoint nr="25" coord="2174,228,0" direction="270"  />
+<endpoint nr="20" coord="2350,228,0" direction="270"  />
+<endpoint nr="18" coord="1534,228,0" direction="90"  />
+<endpoint nr="23" coord="2525,228,0" direction="90"  />
+<endpoint nr="21" coord="2174,228,0" direction="90"  />
+<endpoint nr="17" coord="2565,228,0" direction="90"  />
+<endpoint nr="19" coord="1854,228,0" direction="270"  />
+<endpoint nr="37" coord="3782,884,0" direction="180"  />
+<endpoint nr="35" coord="2594,1251,0" direction="225"  />
+<endpoint nr="26" coord="3782,884,0" direction="360"  />
+<endpoint nr="28" coord="3782,844,0" direction="180"  />
+<endpoint nr="27" coord="3782,924,0" direction="180"  />
+<endpoint nr="30" coord="2594,1251,0" direction="45"  />
+<endpoint nr="31" coord="2875,1438,0" direction="247"  />
+<endpoint nr="36" coord="2368,1024,0" direction="45"  />
+<endpoint nr="38" coord="3782,844,0" direction="360"  />
+<endpoint nr="29" coord="3782,804,0" direction="360"  />
+<endpoint nr="41" coord="2349,228,0" direction="90"  />
+<endpoint nr="42" coord="2525,228,0" direction="270"  />
+<endpoint nr="43" coord="3704,1216,0" direction="150"  />
+<endpoint nr="44" coord="3782,928,0" direction="0"  />
+<endpoint nr="39" coord="3704,516,0" direction="30"  />
+<endpoint nr="40" coord="3782,804,0" direction="180"  />
+<endpoint nr="58" coord="2565,1504,0" direction="90"  />
+<endpoint nr="47" coord="2525,1504,0" direction="90"  />
+<endpoint nr="45" coord="2525,1504,0" direction="270"  />
+<endpoint nr="48" coord="2565,1504,0" direction="270"  />
+<endpoint nr="52" coord="2174,1504,0" direction="90"  />
+<endpoint nr="54" coord="926,305,0" direction="120"  />
+<endpoint nr="50" coord="1214,228,0" direction="90"  />
+<endpoint nr="55" coord="1214,228,0" direction="270"  />
+<endpoint nr="51" coord="1534,228,0" direction="270"  />
+<endpoint nr="53" coord="2350,1504,0" direction="270"  />
+<endpoint nr="46" coord="2349,1504,0" direction="90"  />
+<endpoint nr="65" coord="715,516,0" direction="330"  />
+<endpoint nr="63" coord="1854,1504,0" direction="90"  />
+<endpoint nr="60" coord="1545,1438,0" direction="292"  />
+<endpoint nr="59" coord="2885,1504,0" direction="270"  />
+<endpoint nr="61" coord="1214,1504,0" direction="90"  />
+<endpoint nr="66" coord="638,804,0" direction="180"  />
+<endpoint nr="56" coord="1854,1504,0" direction="270"  />
+<endpoint nr="57" coord="1534,1504,0" direction="90"  />
+<endpoint nr="64" coord="2174,1504,0" direction="270"  />
+<endpoint nr="62" coord="1534,1504,0" direction="270"  />
+<endpoint nr="67" coord="926,305,0" direction="300"  />
+<endpoint nr="69" coord="926,1427,0" direction="240"  />
+<endpoint nr="70" coord="715,1216,0" direction="30"  />
+<endpoint nr="68" coord="715,516,0" direction="150"  />
+<endpoint nr="81" coord="1214,1504,0" direction="270"  />
+<endpoint nr="71" coord="715,1216,0" direction="210"  />
+<endpoint nr="72" coord="638,928,0" direction="360"  />
+<endpoint nr="83" coord="638,844,0" direction="360"  />
+<endpoint nr="84" coord="638,884,0" direction="180"  />
+<endpoint nr="73" coord="1825,481,0" direction="225"  />
+<endpoint nr="75" coord="1825,481,0" direction="45"  />
+<endpoint nr="74" coord="1545,294,0" direction="67"  />
+<endpoint nr="77" coord="1825,1251,0" direction="135"  />
+<endpoint nr="79" coord="1825,1251,0" direction="315"  />
+<endpoint nr="78" coord="2051,1024,0" direction="315"  />
+<endpoint nr="80" coord="1545,1438,0" direction="112"  />
+<endpoint nr="82" coord="926,1427,0" direction="60"  />
+<endpoint nr="76" coord="2051,708,0" direction="225"  />
+<endpoint nr="87" coord="638,884,0" direction="360"  />
+<endpoint nr="85" coord="638,804,0" direction="360"  />
+<endpoint nr="86" coord="638,844,0" direction="180"  />
+<endpoint nr="88" coord="638,924,0" direction="180"  />
+<endpoint nr="89" coord="2368,708,0" direction="315"  />
+<endpoint nr="90" coord="2340,736,0" direction="135"  />
+<endpoint nr="91" coord="2051,1024,0" direction="135"  />
+<endpoint nr="92" coord="2176,900,0" direction="315"  />
+<endpoint nr="95" coord="2176,900,0" direction="135"  />
+<endpoint nr="93" coord="2340,736,0" direction="315"  />
+<endpoint nr="94" coord="2300,776,0" direction="135"  />
+<endpoint nr="96" coord="2300,776,0" direction="315"  />
+</endpoints>
+</layout>
