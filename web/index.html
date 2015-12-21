@@ -2,32 +2,37 @@
 <html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<title>Model Railroad</title>
-	<!-- <link rel="stylesheet" href="demo.css"media="screen"> -->
-	<script src="js/raphael.min.js"></script>
-	<script src="js/jquery-2.1.4.min.js"></script>
-	<script src="js/raphael.pan-zoom.js"></script>
-	<script src="js/track.js"></script>
-	<script src="js/straightTrack.js"></script>
-	<script src="js/layout.js"></script>
-	<link rel="stylesheet" type="text/css" src="/css/raphael.pan-zoom.css" />
-	<style>
-		window, document, body {
-			margin: 0;
-			padding: 0;
-		}
-		#canvas { overflow: hidden; margin:0;padding:0; line-height: 0; }
-		
-	</style>
+    <meta charset="utf-8">
+    <title>Model Railroad</title>
+    <!-- <link rel="stylesheet" href="demo.css"media="screen"> -->
+    <script src="js/raphael.min.js"></script>
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/raphael.pan-zoom.js"></script>
+    <script src="js/base.js"></script>
+    <script src="js/track.js"></script>
+    <script src="js/straightTrack.js"></script>
+    <script src="js/layout.js"></script>
+    <link rel="stylesheet" type="text/css" src="/css/raphael.pan-zoom.css" />
+    <style>
+        window,
+        document,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #canvas {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            line-height: 0;
+        }
+    </style>
 </head>
-
 <body style="background-color:#666">
-
 <div id="canvas"></div>
-
 <script>
-	var paper = Raphael("canvas", 1000, 1000);//, function() {
+    var paper = Raphael("canvas", 1000, 1000);
 	
 	var sizeit = function() {
 		paper.setSize($(window).width(), $(window).height());
@@ -43,14 +48,17 @@
 	
 	var t1 = new StraightTrack({x:200, y:200, r:45, l: 10});
 	layout.AddTrack(t1);
-
+    
+    var t2 = new StraightTrack({l: 10});
+    t2.connectTo(t1, 1);
+    layout.AddTrack(t2);
+    
 	//var t2 = new Track(TRACK_TYPE.CURVE, {r:36, a:30});
 	//layout.AddTrack(t2);
 	
 	//t1.moveTo(0,100);
 	//t2.moveTo(100,300);
+
 </script>
-
 </body>
-
 </html>

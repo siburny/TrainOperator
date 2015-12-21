@@ -1,4 +1,3 @@
-/* global $ */
 var TRACK_TYPE = Object.freeze({
 	STRAIGHT: 1,
 	CURVE: 2
@@ -6,53 +5,68 @@ var TRACK_TYPE = Object.freeze({
 var INCH_TO_PIXEL = 20;
 var TRACK_WIDTH = 1*INCH_TO_PIXEL;
 
-function Track() {
-	this.options = {
-		x: 0,
-		y: 0,
-		r: 0
-	};
-	
-	this.connections = [];
-}
+var Track = Class.extend({
+    init: function () {
+        this.options = {
+            x: 0,
+            y: 0,
+            r: 0
+        };
 
-Track.prototype.draw = function (paper) {
-	if(this.image != undefined)
-		this.image.remove();
-	this.image = paper.set();
-	
-	this.image.push(paper.circle(0, 0, 5).attr({"stroke":"#fff","fill":"#aaa"}));
-	this.image.push(paper.text(0,-20,"Missing image").attr({"fill":"#aaa","font-size": 16}));
-	/*
-	var track = [];
-	if(this.type == TRACK_TYPE.STRAIGHT) {
-		track = _getStraightTrackPath(this.l*INCH_TO_PIXEL);
-	} else if(this.type == TRACK_TYPE.CURVE) {
-		track = _getCurveTrackPath(this.r*INCH_TO_PIXEL, 22.5);
-	}
-	
-	if(this.image == undefined)
-		this.image = paper.set();
+        this.connections = [];
+    },
+    
+    draw: function (paper) {
+        if (this.image != undefined)
+            this.image.remove();
+        this.image = this.getPath(paper);
+        /*
+        var track = [];
+        if(this.type == TRACK_TYPE.STRAIGHT) {
+            track = _getStraightTrackPath(this.l*INCH_TO_PIXEL);
+        } else if(this.type == TRACK_TYPE.CURVE) {
+            track = _getCurveTrackPath(this.r*INCH_TO_PIXEL, 22.5);
+        }
+    	
+        if(this.image == undefined)
+            this.image = paper.set();
+    
+        var path = paper.path(track).attr({ stroke: '#CCC', fill: '#888' });
+        this.image.push(path);
+        //this.image.push(path.glow({ color: '#FFF', width: 2 }));
+        */
+    },
+    
+    getPath: function(paper) {
+        var set = paper.set();
+        set.push(paper.circle(0, 0, 5).attr({ "stroke": "#fff", "fill": "#aaa" }));
+        set.push(paper.text(0, -20, "Missing image").attr({ "fill": "#aaa", "font-size": 16 }));
+        return set;
+    },
 
-	var path = paper.path(track).attr({ stroke: '#CCC', fill: '#888' });
-	this.image.push(path);
-	//this.image.push(path.glow({ color: '#FFF', width: 2 }));
-	*/
-}
+    moveTo: function (x, y, r) {
+        this.options.x = x;
+        this.options.y = y;
+        this.image.transform(["t", x, y]);
+    },
 
-Track.prototype.moveTo = function(x, y, r) {
-	this.options.x = x;
-	this.options.y = y;
-	this.image.transform(["t",x,y]);
-}
+    connectTo: function (track, number) {
+        if (number == undefined)
+            number = 0;
+            
+        console.log(track.getAnchors()[number]);
+        return;    
+        var anchor1 = track.getAnchors()[number],
+            anchor2 = this.getAnchors()[0];
+
+        this.options.x = track.options.x - anchor1.dx + anchor2.dx;
+        this.options.y = track.options.y - anchor1.dy + anchor2.dy;
+    
+        //console.log(anchor);
+    }
+});
 
 function _getAnchor(r, a1, a2) {
-	if(this.type == TRACK_TYPE.STRAIGHT) {
-		return [
-			{ dx: 0, dy: this.l/2 },
-			{ dx: 0, dy: this.l/2 }
-		];
-	}
 	return [{ dx: r * Math.cos(a1 * Math.PI / 180) - r * Math.cos((a1 + a2/2) * Math.PI / 180),
 			 dy: r * Math.sin(a1 * Math.PI / 180) - r * Math.sin((a1 + a2/2) * Math.PI / 180) }];
 }
