@@ -5,13 +5,11 @@
     <meta charset="utf-8">
     <title>Model Railroad</title>
     <!-- <link rel="stylesheet" href="demo.css"media="screen"> -->
-    <script src="js/raphael.min.js"></script>
+    <script src="js/raphael.js"></script>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/raphael.pan-zoom.js"></script>
-    <script src="js/base.js"></script>
-    <script src="js/track.js"></script>
-    <script src="js/straightTrack.js"></script>
-    <script src="js/layout.js"></script>
+	<script src="js/raphael.group.js"></script>
+    <script src="js/bundle.js"></script>
     <link rel="stylesheet" type="text/css" src="/css/raphael.pan-zoom.css" />
     <style>
         window,
@@ -33,25 +31,42 @@
 <div id="canvas"></div>
 <script>
     var paper = Raphael("canvas", 1000, 1000);
+    var Layout = require("layout");
 	
 	var sizeit = function() {
 		paper.setSize($(window).width(), $(window).height());
 		paper.panzoom({ initialZoom: 2, initialPosition: { x: -200, y: -200} }).enable();
 	}
-	$(function() {
+
+    var layout = new Layout(paper);
+
+    $(function() {
 		sizeit();
 		$(window).resize(sizeit);
 	});
 	
-	var layout = new Layout(paper);
-	layout.ShowGrid();	
+    $(function() {
+    	layout.ClientShowGrid();
+        
+        var reload = function () {
+            if (!!layout._loaded) {
+                layout.ClientDraw();
+                return;
+            }
+
+            setTimeout(function () {
+                layout.ClientLoadLayout(reload);
+            }, 5000);
+        }
+        layout.ClientLoadLayout(reload);
+    });
 	
-	var t1 = new StraightTrack({x:200, y:200, r:45, l: 10});
+	/*var t1 = new StraightTrack({x:200, y:200, r:45, l: 10});
 	layout.AddTrack(t1);
     
     var t2 = new StraightTrack({l: 10});
     t2.connectTo(t1, 1);
-    layout.AddTrack(t2);
+    layout.AddTrack(t2);*/
     
 	//var t2 = new Track(TRACK_TYPE.CURVE, {r:36, a:30});
 	//layout.AddTrack(t2);

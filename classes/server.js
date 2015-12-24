@@ -4,10 +4,9 @@ var app = express();
 // global routes
 app.use(express.static("web"));
 
-//
-app.use("/api/getLayout", function(req, res) {
-	res.json([{x:100,y:100}]);
-	//res.end();
+// API
+app.use("/api/LoadLayout", function(req, res) {
+    res.json(layout);
 });
 
 function server() {
@@ -22,4 +21,4 @@ server.prototype.start = function () {
 	});
 }
 
-exports.server = server;
+module.exports.server = server;

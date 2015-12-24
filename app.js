@@ -1,5 +1,10 @@
-var server = new (require("./server.js").server)();
+/* global global */
+var server = new (require("./classes/server").server)();
 
-var track = require("./layout");
+var Layout = require("./classes/layout"),
+    Datastore = require('nedb');
+
+global.db = new Datastore({ filename: 'data/train.db', autoload: true });
+global.layout = new Layout();
 
 server.start();
