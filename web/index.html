@@ -31,11 +31,13 @@
 <div id="canvas"></div>
 <script>
     var paper = Raphael("canvas", 1000, 1000);
+	var panzoom;
     var Layout = require("layout");
 	
 	var sizeit = function() {
 		paper.setSize($(window).width(), $(window).height());
-		paper.panzoom({ initialZoom: 2, initialPosition: { x: -200, y: -200} }).enable();
+		panzoom = paper.panzoom({ initialZoom: 0, maxZoom: 2, minZoom: -10 });
+		panzoom.enable()
 	}
 
     var layout = new Layout(paper);
@@ -51,7 +53,12 @@
         var reload = function () {
             if (!!layout._loaded) {
                 layout.ClientDraw();
-                return;
+				
+				// re-center
+				var box = layout.GetBBox();
+				panzoom.move((paper.width - box.xmin - box.xmax) / 2, (paper.height - box.ymin - box.ymax) / 2);
+                
+				return;
             }
 
             setTimeout(function () {

@@ -1,57 +1,78 @@
+/* global CurveTrack */
+/* global db */
+/* global StraightTrack */
 require("./track/straightTrack");
+require("./track/curveTrack");
 
 var //fs = require('fs'),
     //xml2js = require('xml2js'),
     Track = require("./track/track"),
     Class = require("class.extend"),
     extend = require("extend"),
-    JSMix = require("jsmix"),
 	json = require("json-serialize");
 
 var Layout = Class.extend('Layout', {
     init: function (paper) {
         this._loaded = false;
         this.track = [];
-        if(paper == undefined)
+		this.options = {};
+        if (paper == undefined)
             this.LoadLayout();
         else
             this.p = paper;
     },
-    
-    LoadLayout: function() {
+
+    LoadLayout: function () {
         var self = this;
-        db.findOne({"type": "track"}, function(err, docs) {
-            if(docs == null) {
+        db.findOne({ "type": "track" }, function (err, docs) {
+            if (docs == null) {
                 console.log("Loading demo tracks ...");
                 self.LoadDemoTrack();
                 self._loaded = true;
             }
         });
-    },
-    
-    LoadDemoTrack: function() {
-        var t1 = new StraightTrack(this.p, {x:100,y:100,r:30,l:10});
-            t2 = new StraightTrack(this.p, {l:10}),
-            t3 = new StraightTrack(this.p, {l:5});
-            
+		db.findOne({ "type": "options" }, function (err, docs) {
+			var defauts = {
+				ShowGrid: true,
+				ShowDynamicGrid: false,
+				ShowEndpoints: false
+			};
+			
+            if (docs == null) {
+				extend(self.options, defauts);
+            }
+        });
+	},
+
+    LoadDemoTrack: function () {
+        var t1 = new StraightTrack(this.p, { x: 400, y: 100, r: 30, l: 10 }),
+            t2 = new StraightTrack(this.p, { l: 10 });
+
         t2.connectTo(t1, 0, 1);
-        t3.connectTo(t1, 0, 0);
         this.AddTrack(t1);
         this.AddTrack(t2);
-        this.AddTrack(t3);
-    },
+
+		var t_old = t2;
+		for (var i = 0; i < 11; i++) {
+			var t = new CurveTrack(this.p, { d: 36 });
+			t.connectTo(t_old);
+			this.AddTrack(t);
+			t_old = t;
+		}
+	},
 
     AddTrack: function (track) {
         if (!(track instanceof Track))
             throw new Error("Invalid track class.");
 
         this.track.push(track);
+		track.id = this.track.indexOf(track); 
     },
 
     Parse: function (text) {
     },
 
-    /*** CLIENT FUNCTIONS ***/    
+    /*** CLIENT FUNCTIONS ***/
     ClientShowGrid: function () {
         var path = [];
 
@@ -69,28 +90,41 @@ var Layout = Class.extend('Layout', {
         this.p.path(path).attr({ "stroke": "#CCC", "stroke-width": 0.2 });
         this.p.path(["M", 0, start, "L", 0, end, "M", start, 0, "L", end, 0]).attr({ "stroke": "#CCC", "stroke-width": 1 });
     },
-    
-    ClientLoadLayout: function(ClientLoadLayout) {
+
+    ClientLoadLayout: function (ClientLoadLayout) {
         var self = this;
-        $.get("/api/LoadLayout", function(data) {
-            
-            //var layout = JSMix(data).withObject(undefined, "*.*").build();
+        $.get("/api/LoadLayout", function (data) {
+
 			var layout = json.deserialize(data);
-			layout.track.forEach(function(item) {
+			layout.track.forEach(function (item) {
                 item.setPaper(self.p);
             });
             extend(self, layout);
-            
-            if(!!ClientLoadLayout)
+
+            if (!!ClientLoadLayout)
                 ClientLoadLayout();
         });
     },
-    
-    ClientDraw: function() {
-        for(var i=0;i<this.track.length;i++) {
-           this.track[i].draw();
+
+    ClientDraw: function () {
+        //this.image.push(path.glow({ color: '#FFF', width: 2 }));
+        for (var i = 0; i < this.track.length; i++) {
+			this.track[i].draw();
         }
-    }
+    },
+	
+	GetBBox: function () {
+		var xmin = Infinity, ymin = Infinity, xmax = -Infinity, ymax = -Infinity;
+        for (var i = 0; i < this.track.length; i++) {
+			var box = this.track[i].image.getBBox();
+			xmin = Math.min(box.x, xmin);
+			ymin = Math.min(box.y, ymin);
+			xmax = Math.max(box.x2, xmax);
+			ymax = Math.max(box.y2, ymax);
+        }
+
+		return { xmin: xmin, ymin: ymin, xmax: xmax, ymax: ymax };
+	}
 });
 
 module.exports = Layout;
@@ -110,8 +144,7 @@ function findSegmentByEndpoint(id) {
 
 function findLoopRecursive(input) {
 	if (loop.length > 3) {
-		if(loop[loop.length-1].connections.indexOf(loop[0].id) > -1)
-		{
+		if (loop[loop.length - 1].connections.indexOf(loop[0].id) > -1) {
 			console.log("found loop", loop);
 		}
 	}

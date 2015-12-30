@@ -82,8 +82,7 @@
 
         options = options || {};
 
-        settings.zoomStep = options.zoomStep || 0.1;
-        settings.maxZoom = typeof options.maxZoom === "number" ? options.maxZoom : (1 / settings.zoomStep)%1 <= 0 ? (1 / settings.zoomStep) - 1 : (1 / settings.zoomStep);
+        settings.maxZoom = typeof options.maxZoom === "number" ? options.maxZoom : 10;
         settings.minZoom = typeof options.minZoom === "number" ? options.minZoom : 0;
         settings.initialZoom = typeof options.initialZoom === "number" ? options.initialZoom : 0;
         settings.initialPosition = options.initialPosition || { x: 0, y: 0 };
@@ -94,13 +93,12 @@
 
         this.currZoom = settings.initialZoom;
         this.currPos = settings.initialPosition;
-        this.zoomStep = settings.zoomStep // ADDED: add a public zoomStep property to the PanZoom object
 
         repaint();
 
         if (settings.gestures && typeof Hammer === "function") {
             var hammer = Hammer(container, {
-                'transform_min_scale': settings.zoomStep,
+                'transform_min_scale': me.getZoomStep(),
                 'drag_block_horizontal': true,
                 'drag_block_vertical': true,
                 'transform_always_block': true,
@@ -112,7 +110,7 @@
 
             hammer.on("touch", function(event) {
                 initialZoom = me.currZoom;
-                initialPercentZoom = 1 / (1 - (initialZoom * settings.zoomStep));
+                initialPercentZoom = me.getZoomStep();
                 previousZoom = me.currZoom;
                 previousCenter = event.gesture.center;
                 firstPinch = true;
@@ -125,7 +123,7 @@
                 setTimeout(function() {
                     var g = event.gesture,
                         newPercentZoom = initialPercentZoom * g.scale,
-                        newZoom = - (( 1 / newPercentZoom -1) / settings.zoomStep),
+                        newZoom = - (( 1 / newPercentZoom -1) / me.getZoomStep()),
                         steps = newZoom - previousZoom;
 
                     if (steps !== 0) {
@@ -236,7 +234,7 @@
         function setZoom(zoomLevel, centerPoint) {
             if (!me.enabled) return false;
             var previousZoom = me.currZoom;
-
+			
             me.currZoom = zoomLevel;
 
             if (me.currZoom < settings.minZoom) {
@@ -245,16 +243,19 @@
                 me.currZoom = settings.maxZoom;
             }
 
-            // correct the added value.
-            val = me.currZoom - previousZoom;
-
-            // if no centerPoint is given ... the center point is at the center of the paper.
-            // the centerPoint is a point given on the original paper width.
             centerPoint = centerPoint || { x: paper.width/2, y: paper.height/2 };
 
-            // still needs an explanation .. don't know how this works ... but it works :)
-            deltaX = ((paper.width * settings.zoomStep) * (centerPoint.x / paper.width)) * val;
-            deltaY = ((paper.height * settings.zoomStep) * (centerPoint.y / paper.height)) * val;
+            var val = me.currZoom - previousZoom;
+
+			var zoomStep = Math.pow(1.2, -me.currZoom);
+			var	zoomStepP = Math.pow(1.2, -previousZoom);
+			if(val < 0) {
+				zoomStep = Math.pow(1.2, -previousZoom);
+				zoomStepP = Math.pow(1.2, -me.currZoom);
+			}
+				
+            deltaX = (zoomStepP - zoomStep) * centerPoint.x * val;
+            deltaY = (zoomStepP - zoomStep) * centerPoint.y * val;
 
             repaint();
         }
@@ -266,14 +267,20 @@
         }
 
         this.applyZoom = applyZoom;
+		
+		function getZoomStep() {
+			return Math.pow(1.2, -me.currZoom);
+		}
+
+        this.getZoomStep = getZoomStep;
 
         /**
          * Transforms the given x, y coordinate from in the paper to a x, y coordinate relative to the container.
          */
         function getPositionRelativeToContainer(x, y) {
             return {
-                'x': ((x - me.currPos.x) / (1 - (me.currZoom * me.zoomStep))),
-                'y': ((y - me.currPos.y) / (1 - (me.currZoom * me.zoomStep)))
+                'x': ((x - me.currPos.x) / me.getZoomStep()),
+                'y': ((y - me.currPos.y) / me.getZoomStep())
             };
         }
 
@@ -324,7 +331,7 @@
         function updatePos(newPoint) {
              // calculate the new width and height ... this is the width/height of what the viewbox will show.
              // the smaller the width/height, the higher the zoom level (the higher the zoomLevel, the less there is shown in the viewBox)
-            var zoomPercentage = (1 - (me.currZoom * settings.zoomStep)),
+            var zoomPercentage = me.getZoomStep(),
                 newWidth = paper.width * zoomPercentage,
                 newHeight = paper.height * zoomPercentage;
 
@@ -346,13 +353,13 @@
             // if there is a delta then the viewBox is moved.
             me.currPos.x = me.currPos.x + deltaX;
             me.currPos.y = me.currPos.y + deltaY;
+			
+			var zoomStep = Math.pow(1.2, -me.currZoom);
 
-            var currZoom = (me.currZoom * settings.zoomStep) >= 1 ? me.currZoom -1 : me.currZoom, // make sure we don't zoom to far
-                zoomPercentage = (1 - (currZoom * settings.zoomStep)), // the zooming percentage
-                newWidth = paper.width * zoomPercentage, // this is the new width of what's shown in the viewbox ... this get's smaller when you have a higher zoomLevel (the higher the zoomLevel, the less there is shown in the viewBox)
-                newHeight = paper.height * zoomPercentage; // this is the new height of what's shown in the viewbox ... this get's smaller when you have a higher zoomLevel (the higher the zoomLevel, the less there is shown in the viewBox)
-
-            // make sure you don't pan too far
+            var zoomPercentage = zoomStep,
+                newWidth = paper.width * zoomPercentage,
+                newHeight = paper.height * zoomPercentage;
+				
             if (me.currPos.x < 0 && settings.panLimit) me.currPos.x = 0;
             else if (me.currPos.x > paper.width - newWidth && settings.panLimit) { // paper.width is not allways the same to the real width and height of the svg ... maybe at custom boundaries?
                 me.currPos.x = paper.width - newWidth;
