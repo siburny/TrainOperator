@@ -1,11 +1,11 @@
-function Matrix(a, b, c, d, e, f) {
-    if (a != null) {
-        this.a = +a;
-        this.b = +b;
-        this.c = +c;
-        this.d = +d;
-        this.e = +e;
-        this.f = +f;
+function Matrix() {
+    if (arguments.length == 6) {
+        this.a = +arguments[0];
+        this.b = +arguments[1];
+        this.c = +arguments[2];
+        this.d = +arguments[3];
+        this.e = +arguments[4];
+        this.f = +arguments[5];
     } else {
         this.a = 1;
         this.b = 0;

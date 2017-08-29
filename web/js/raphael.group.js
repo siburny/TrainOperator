@@ -83,7 +83,8 @@ Raphael.fn.group = function(){
 				return this;
 			},
 			getBBox: function() {
-				return set.getBBox();
+				var ret = group.getBoundingClientRect();
+				return { x: ret.left, y: ret.top, x2: ret.right, y2: ret.bottom, width: ret.width, height: ret.height };
 			},
 			type: 'group',
 			node: group,
