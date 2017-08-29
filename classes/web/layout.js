@@ -5,54 +5,16 @@ var //fs = require('fs'),
     Track = require("./track/track"),
     Class = require("class.extend"),
     extend = require("extend"),
-    JSMix = require("jsmix"),
-	json = require("json-serialize");
+		json = require("json-serialize");
 
 var Layout = Class.extend('Layout', {
     init: function (paper) {
-        this._loaded = false;
-        this.track = [];
-        if(paper == undefined)
-            this.LoadLayout();
-        else
-            this.p = paper;
+			this._loaded = false;
+			this.track = [];
+			this.p = paper;
     },
     
-    LoadLayout: function() {
-        var self = this;
-        db.findOne({"type": "track"}, function(err, docs) {
-            if(docs == null) {
-                console.log("Loading demo tracks ...");
-                self.LoadDemoTrack();
-                self._loaded = true;
-            }
-        });
-    },
-    
-    LoadDemoTrack: function() {
-        var t1 = new StraightTrack(this.p, {x:100,y:100,r:30,l:10});
-            t2 = new StraightTrack(this.p, {l:10}),
-            t3 = new StraightTrack(this.p, {l:5});
-            
-        t2.connectTo(t1, 0, 1);
-        t3.connectTo(t1, 0, 0);
-        this.AddTrack(t1);
-        this.AddTrack(t2);
-        this.AddTrack(t3);
-    },
-
-    AddTrack: function (track) {
-        if (!(track instanceof Track))
-            throw new Error("Invalid track class.");
-
-        this.track.push(track);
-    },
-
-    Parse: function (text) {
-    },
-
-    /*** CLIENT FUNCTIONS ***/    
-    ClientShowGrid: function () {
+    ShowGrid: function () {
         var path = [];
 
         var start = -1000,
@@ -70,23 +32,21 @@ var Layout = Class.extend('Layout', {
         this.p.path(["M", 0, start, "L", 0, end, "M", start, 0, "L", end, 0]).attr({ "stroke": "#CCC", "stroke-width": 1 });
     },
     
-    ClientLoadLayout: function(ClientLoadLayout) {
+    LoadLayout: function(LoadLayout) {
         var self = this;
         $.get("/api/LoadLayout", function(data) {
-            
-            //var layout = JSMix(data).withObject(undefined, "*.*").build();
 			var layout = json.deserialize(data);
 			layout.track.forEach(function(item) {
                 item.setPaper(self.p);
             });
             extend(self, layout);
             
-            if(!!ClientLoadLayout)
-                ClientLoadLayout();
+            if(!!LoadLayout)
+                LoadLayout();
         });
     },
     
-    ClientDraw: function() {
+    Draw: function() {
         for(var i=0;i<this.track.length;i++) {
            this.track[i].draw();
         }
