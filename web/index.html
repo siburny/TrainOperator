@@ -8,11 +8,14 @@
     <script src="js/raphael.js"></script>
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/raphael.pan-zoom.js"></script>
-	<script src="js/raphael.group.js"></script>
-    
+    <script src="js/raphael.group.js"></script>
+
     <script src="js/bundle.js"></script>
-    
+
+    <link rel="stylesheet" href="/css/roboto.css" />
+    <link rel="stylesheet" href="/css/material-icons.css" />
     <link rel="stylesheet" type="text/css" src="/css/raphael.pan-zoom.css" />
+    <link rel="stylesheet" href="/material-components-web/dist/material-components-web.css">
     <style>
         window,
         document,
@@ -20,7 +23,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         #canvas {
             overflow: hidden;
             margin: 0;
@@ -28,61 +31,94 @@
             line-height: 0;
         }
     </style>
+    <style>
+        :root {
+           --mdc-theme-primary: #607D8B;
+       }
+   </style>
 </head>
+
 <body style="background-color:#666">
-<div id="canvas"></div>
-<script>
-    var paper = Raphael("canvas", 1000, 1000);
-	var panzoom;
-    var Layout = require("layout");
-	
-	var sizeit = function() {
-		paper.setSize($(window).width(), $(window).height());
-		panzoom = paper.panzoom({ initialZoom: 0, maxZoom: 2, minZoom: -10 });
-		panzoom.enable()
-	}
 
-    var layout = new Layout(paper);
+    <aside class="mdc-temporary-drawer mdc-typography">
+        <nav class="mdc-temporary-drawer__drawer">
+            <header class="mdc-temporary-drawer__header">
+                <div class="mdc-temporary-drawer__header-content">
+                    Header here
+                </div>
+            </header>
+            <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
+                <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+            </a>
+                <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+            </a>
+            </nav>
+        </nav>
+    </aside>
 
-    $(function() {
-		sizeit();
-		$(window).resize(sizeit);
-	});
-	
-    $(function() {
-    	layout.ClientShowGrid();
-        
-        var reload = function () {
-            if (!!layout._loaded) {
-                layout.ClientDraw();
-				
-				// re-center
-				var box = layout.GetBBox();
-				panzoom.move((paper.width - box.xmin - box.xmax) / 2, (paper.height - box.ymin - box.ymax) / 2);
-                
-				return;
-            }
+    <header class="mdc-toolbar mdc-elevation--z4">
+        <div class="mdc-toolbar__row">
+            <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+                <button class="demo-menu material-icons mdc-toolbar__icon--menu">menu</button>
+                <span class="mdc-toolbar__title catalog-title">Persistent Drawer</span>
+            </section>
+        </div>
+    </header>
 
-            setTimeout(function () {
-                layout.ClientLoadLayout(reload);
-            }, 5000);
+    <main class="demo-main">
+        <div id="canvas"></div>
+    </main>
+
+    <script>
+        var paper = Raphael("canvas", 1000, 1000);
+        var panzoom;
+        var Layout = require("layout");
+
+        var sizeit = function () {
+            paper.setSize($(window).width(), $(window).height());
+            panzoom = paper.panzoom({ initialZoom: 0, maxZoom: 2, minZoom: -10 });
+            panzoom.enable()
         }
-        layout.ClientLoadLayout(reload);
-    });
-	
-	/*var t1 = new StraightTrack({x:200, y:200, r:45, l: 10});
-	layout.AddTrack(t1);
-    
-    var t2 = new StraightTrack({l: 10});
-    t2.connectTo(t1, 1);
-    layout.AddTrack(t2);*/
-    
-	//var t2 = new Track(TRACK_TYPE.CURVE, {r:36, a:30});
-	//layout.AddTrack(t2);
-	
-	//t1.moveTo(0,100);
-	//t2.moveTo(100,300);
 
-</script>
+        var layout = new Layout(paper);
+
+        $(function () {
+            sizeit();
+            $(window).resize(sizeit);
+        });
+
+        $(function () {
+            var reload = function () {
+                if (!!layout._loaded) {
+                    layout.Draw();
+
+                    // re-center
+                    var box = layout.GetBBox();
+                    panzoom.move((paper.width - box.xmin - box.xmax) / 2, (paper.height - box.ymin - box.ymax) / 2);
+
+                    return;
+                }
+
+                setTimeout(function () {
+                    layout.LoadLayout(reload);
+                }, 5000);
+            }
+            layout.LoadLayout(reload);
+        });
+    </script>
+
+    <script src="/material-components-web/dist/material-components-web.js"></script>
+    <script>
+        mdc.autoInit()
+
+        var MDCTemporaryDrawer = mdc.drawer.MDCTemporaryDrawer;
+        var drawer = new MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
+        document.querySelector('.demo-menu').addEventListener('click', function () {
+            drawer.open = !drawer.open;
+        });
+    </script>
 </body>
+
 </html>

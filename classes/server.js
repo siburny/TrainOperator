@@ -4,10 +4,11 @@ function start() {
 
 	// global routes
 	app.use(express.static("web"));
+	app.use(express.static("node_modules"));
 
 	// API
 	app.use("/api/LoadLayout", function (req, res) {
-		res.json(layout);
+		res.json(module.exports.layout);
 	});
 
 	var server = app.listen(3000, function () {

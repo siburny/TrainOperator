@@ -4,13 +4,14 @@ var //fs = require('fs'),
 	Track = require("./track/track"),
 	StraightTrack = require('./track/straightTrack'),
 	Class = require("class.extend"),
-	extend = require("extend"),
-	json = require("json-serialize");
+	extend = require("extend");
 
 var Layout = Class.extend('Layout', {
 	init: function () {
 		this._loaded = false;
 		this.track = [];
+		this.options = {};
+		this.LoadLayout();
 	},
 
 	LoadLayout: function () {
@@ -22,15 +23,28 @@ var Layout = Class.extend('Layout', {
 				self._loaded = true;
 			}
 		});
+		server.db.findOne({ "type": "options" }, function (err, docs) {
+			var defauts = {
+				ShowGrid: true,
+				ShowDynamicGrid: true,
+				ShowEndpoints: true
+			};
+
+			if (docs == null) {
+				extend(self.options, defauts);
+			}
+		});
 	},
 
 	LoadDemoTrack: function () {
-		var t1 = new StraightTrack(this.p, { x: 100, y: 100, r: 30, l: 10 });
-		t2 = new StraightTrack(this.p, { l: 10 }),
-			t3 = new StraightTrack(this.p, { l: 5 });
+		var t1 = new StraightTrack({ id: 1, x: 100, y: 100, r: 30, l: 10 });
+		t2 = new StraightTrack({ id: 2, l: 10 }),
+		t3 = new StraightTrack({ id: 3, l: 5 });
 
 		t2.connectTo(t1, 0, 1);
 		t3.connectTo(t1, 0, 0);
+
+
 		this.AddTrack(t1);
 		this.AddTrack(t2);
 		this.AddTrack(t3);

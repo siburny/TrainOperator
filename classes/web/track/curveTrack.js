@@ -1,8 +1,5 @@
 /* global layout */
-/* global TRACK_WIDTH */
 /* global global */
-/* global INCH_TO_PIXEL */
-/* global TRACK_TYPE */
 var Track = require("./track"),
     extend = require("extend");
 
@@ -28,7 +25,7 @@ var CurveTrack = Track.extend('CurveTrack', {
         this._super(paper);
 
 		this.options.d = 36;
-		this.type = TRACK_TYPE.CURVE;
+		this.type = Track.TRACK_TYPE.CURVE;
 
         if (options != undefined) {
             extend(this.options, options)
@@ -41,21 +38,22 @@ var CurveTrack = Track.extend('CurveTrack', {
         this.image = this.options.p.group();
 
         var track = this._getCurveTrackPath();
+        var background = this._getCurveTrackPath(true);
 
-        var path = this.options.p.path(track).attr({ stroke: '#CCC', fill: '#888' });
-        this.image.push(path);
+        this.image.push(this.options.p.path(background).attr({ stroke: 'none', fill: '#888' }));
+        this.image.push(this.options.p.path(track).attr({ stroke: '#CCC' }));
 
 		if (!!layout.options.ShowEndpoints) {
 			var endpoints = this.getEndpoints(true);
 			for (var i = 0; i < endpoints.length; i++) {
-				var arc = this._arcPath(this.options.d * INCH_TO_PIXEL / 2 + TRACK_WIDTH / 2, endpoints[i].r % 180, - 0.5 * Math.sign(endpoints[i].dy))
+				var arc = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH / 2, endpoints[i].r % 180, - 0.5 * Math.sign(endpoints[i].dy))
 				var dx = arc[arc.length - 2],
 					dy = arc[arc.length - 1];
 
 				this.image.push(this.options.p.circle(endpoints[i].dx - dx, endpoints[i].dy - dy, 2)
 					.attr({ "stroke": "#fff", "fill": "#aaa" }));
 
-				arc = this._arcPath(this.options.d * INCH_TO_PIXEL / 2 + TRACK_WIDTH / 2, endpoints[i].r % 180, - 2 * Math.sign(endpoints[i].dy))
+				arc = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH / 2, endpoints[i].r % 180, - 2 * Math.sign(endpoints[i].dy))
 				dx = arc[arc.length - 2], dy = arc[arc.length - 1];
 				this.image.push(this.options.p.text(endpoints[i].dx - dx, endpoints[i].dy - dy, i)
 					.transform(["r", -this.options.r])
@@ -66,21 +64,26 @@ var CurveTrack = Track.extend('CurveTrack', {
         this.moveTo();
     },
 
-	_getCurveTrackPath: function () {
+	_getCurveTrackPath: function (full) {
+		if(full === undefined) {
+			full = false;
+		}
+		
 		var anchor = this.getEndpoints(true)[0],
 			a = 360 / CurvesToCircle[this.options.d];
-		var path = ["M", anchor.dx - TRACK_WIDTH / 2, anchor.dy];
+		var path = ["M", anchor.dx - Track.TRACK_WIDTH / 2, anchor.dy];
 		
-		var arc1 = this._arcPath(this.options.d * INCH_TO_PIXEL / 2 + TRACK_WIDTH / 2, 0, a),
-			arc_t = this._arcPath(this.options.d * INCH_TO_PIXEL / 2 - TRACK_WIDTH / 2, 0, a),
-			arc2 = this._arcPath(this.options.d * INCH_TO_PIXEL / 2 - TRACK_WIDTH / 2, a, -a);
+		var arc1 = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH / 2, 0, a),
+			arc_t = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 - Track.TRACK_WIDTH / 2, 0, a),
+			arc2 = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 - Track.TRACK_WIDTH / 2, a, -a);
 
 		path.push(arc1);
-		path.push(["l", TRACK_WIDTH + arc_t[arc_t.length - 2] - arc1[arc1.length - 2], arc_t[arc_t.length - 1] - arc1[arc1.length - 1]]);
+		path.push([full || this.options.connections[1] == undefined ? "l" : "m", Track.TRACK_WIDTH + arc_t[arc_t.length - 2] - arc1[arc1.length - 2], arc_t[arc_t.length - 1] - arc1[arc1.length - 1]]);
 		path.push(arc2);
-		path.push(["l", -TRACK_WIDTH, 0]);
-		
-		path.push(["z"]);
+		path.push([full || this.options.connections[0] == undefined ? "l" : "m", -Track.TRACK_WIDTH, 0]);
+		if (full || this.options.connections[1] == undefined) {
+			path.push(["z"]);
+		}
 
 		return path;
 	},
@@ -98,13 +101,13 @@ var CurveTrack = Track.extend('CurveTrack', {
 
         var endpoints = [
 			{
-				dx: INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - INCH_TO_PIXEL * this.options.d * Math.cos((a - a) * Math.PI / 180) / 2,
-				dy: INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - INCH_TO_PIXEL * this.options.d * Math.sin((a - a) * Math.PI / 180) / 2,
+				dx: Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos((a - a) * Math.PI / 180) / 2,
+				dy: Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin((a - a) * Math.PI / 180) / 2,
 				r: 0
 			},
 			{
-				dx: INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - INCH_TO_PIXEL * this.options.d * Math.cos((a + a) * Math.PI / 180) / 2,
-				dy: INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - INCH_TO_PIXEL * this.options.d * Math.sin((a + a) * Math.PI / 180) / 2,
+				dx: Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos((a + a) * Math.PI / 180) / 2,
+				dy: Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin((a + a) * Math.PI / 180) / 2,
 				r: 180 + 360 / CurvesToCircle[this.options.d]
 			}
         ];

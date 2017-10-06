@@ -16,9 +16,22 @@ var StraightTrack = Track.extend('StraightTrack', {
         this.type = Track.TRACK_TYPE.STRAIGHT;
     },
 
+    getEndpoints: function (notransform) {
+        var endpoints = [
+            { r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2 },
+            { r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2 }
+        ];
+
+		if (!!notransform)
+			return endpoints;
+
+		return this._super(endpoints);
+    },
+
     toJSON: function () {
         return {
             _type: "StraightTrack",
+            id: this.id,
             options: this.options
         }
     }

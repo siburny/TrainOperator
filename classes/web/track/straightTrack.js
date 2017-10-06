@@ -1,8 +1,3 @@
-/* global layout */
-/* global INCH_TO_PIXEL */
-/* global TRACK_TYPE */
-/* global TRACK_WIDTH */
-/* global global */
 var Class = require("Class.extend"),
     Track = require("./track"),
     extend = require("extend");
@@ -21,7 +16,7 @@ var StraightTrack = Track.extend('StraightTrack', {
             extend(this.options, options)
         }
 
-        this.type = TRACK_TYPE.STRAIGHT;
+        this.type = Track.TRACK_TYPE.STRAIGHT;
     },
 
     draw: function () {
@@ -29,13 +24,14 @@ var StraightTrack = Track.extend('StraightTrack', {
             this.image.clear();
         this.image = this.options.p.group();
 
-        var track = this._getStraightTrackPath(this.options.l * INCH_TO_PIXEL);
+        var track = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
+		var background = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
 
-        var path = this.options.p.path(track).attr({ stroke: '#CCC', fill: '#888' });
-        this.image.push(path);
+        this.image.push(this.options.p.path(background).attr({ fill: '#888', stroke: 'none' }));
+        this.image.push(this.options.p.path(track).attr({ stroke: '#CCC' }));
 
 		if (!!layout.options.ShowEndpoints) {
-			var endpoints = this.getEndpoints(true);
+            var endpoints = this.getEndpoints(true);
 			for (var i = 0; i < endpoints.length; i++) {
 				this.image.push(this.options.p.circle(endpoints[i].dx, endpoints[i].dy - 6 * Math.sign(endpoints[i].dy) / 2, 2)
 					.attr({ "stroke": "#fff", "fill": "#aaa" }));
@@ -48,26 +44,27 @@ var StraightTrack = Track.extend('StraightTrack', {
         this.moveTo();
     },
 
-    getEndpoints: function (notransform) {
+    getEndpoints: function () {
         var endpoints = [
-            { r: 0, dx: 0, dy: this.options.l * INCH_TO_PIXEL / 2 },
-            { r: 180, dx: 0, dy: -this.options.l * INCH_TO_PIXEL / 2 }
+            { r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2 },
+            { r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2 }
         ];
 
-		if (!!notransform)
-			return endpoints;
-
-		return this._super(endpoints);
+        return endpoints;
     },
-
-    _getStraightTrackPath: function (l) {
+    
+    _getStraightTrackPath: function (l, full) {
+		if(full === undefined) {
+			full = false;
+		}
+		
         var path = [];
-		path.push(["M", -TRACK_WIDTH / 2, l / 2]);
+		path.push(["M", -Track.TRACK_WIDTH / 2, l / 2]);
         path.push(["l", 0, -l]);
-		path.push([this.options.connections[1] == undefined ? "l" : "l", TRACK_WIDTH, 0]);
+		path.push([full || this.options.connections[1] == undefined ? "l" : "m", Track.TRACK_WIDTH, 0]);
         path.push(["l", 0, l]);
-		path.push([this.options.connections[0] == undefined ? "l" : "l", -TRACK_WIDTH, 0]);
-		if (this.options.connections[0] == undefined)
+		path.push([full || this.options.connections[0] == undefined ? "l" : "m", -Track.TRACK_WIDTH, 0]);
+		if (full || this.options.connections[1] == undefined)
 			path.push(["z"]);
 
         return path;
