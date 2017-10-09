@@ -3,6 +3,7 @@ var //fs = require('fs'),
 	server = require("../server"),
 	Track = require("./track/track"),
 	StraightTrack = require('./track/straightTrack'),
+	CurveTrack = require('./track/CurveTrack'),
 	Class = require("class.extend"),
 	extend = require("extend");
 
@@ -21,6 +22,9 @@ var Layout = Class.extend('Layout', {
 				console.log("Loading demo tracks ...");
 				self.LoadDemoTrack();
 				self._loaded = true;
+
+				//TODO: add save
+				//server.db.insert(self.track);
 			}
 		});
 		server.db.findOne({ "type": "options" }, function (err, docs) {
@@ -38,16 +42,38 @@ var Layout = Class.extend('Layout', {
 
 	LoadDemoTrack: function () {
 		var t1 = new StraightTrack({ id: 1, x: 100, y: 100, r: 30, l: 10 });
-		t2 = new StraightTrack({ id: 2, l: 10 }),
-		t3 = new StraightTrack({ id: 3, l: 5 });
-
-		t2.connectTo(t1, 0, 1);
-		t3.connectTo(t1, 0, 0);
-
-
 		this.AddTrack(t1);
-		this.AddTrack(t2);
-		this.AddTrack(t3);
+
+		var id = 2;
+
+		t_p = t1;
+		for (var i = 0; i < 8; i++) {
+			var t = new CurveTrack({ id: id++, d: 54 });
+			t.connectTo(t_p, 0, 1);
+			this.AddTrack(t);
+			t_p = t;
+		}
+
+		for (var i = 0; i < 4; i++) {
+			var t = new StraightTrack({ id: id++, l: 10 });
+			t.connectTo(t_p, 0, 1);
+			this.AddTrack(t);
+			t_p = t;
+		}
+
+		for (var i = 0; i < 8; i++) {
+			var t = new CurveTrack({ id: id++, d: 54 });
+			t.connectTo(t_p, 0, 1);
+			this.AddTrack(t);
+			t_p = t;
+		}
+
+		/*for (var i = 0; i < 3; i++) {
+			var t = new StraightTrack({ id: id++, l: 10 });
+			t.connectTo(t_p, 0, 1);
+			this.AddTrack(t);
+			t_p = t;
+		}*/
 	},
 
 	AddTrack: function (track) {

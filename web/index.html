@@ -29,13 +29,28 @@
             margin: 0;
             padding: 0;
             line-height: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        path {
+            transition: fill .2s ease;
+        }
+
+        .track path {
+            fill: #888;
+        }
+
+        .track:hover path {
+            fill: #ccc;
         }
     </style>
     <style>
         :root {
-           --mdc-theme-primary: #607D8B;
-       }
-   </style>
+            --mdc-theme-primary: #607D8B;
+        }
+    </style>
 </head>
 
 <body style="background-color:#666">
@@ -49,11 +64,11 @@
             </header>
             <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
                 <a class="mdc-list-item mdc-temporary-drawer--selected" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
-            </a>
+                    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+                </a>
                 <a class="mdc-list-item" href="#">
-              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
-            </a>
+                    <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+                </a>
             </nav>
         </nav>
     </aside>
@@ -77,15 +92,16 @@
         var Layout = require("layout");
 
         var sizeit = function () {
-            paper.setSize($(window).width(), $(window).height());
-            panzoom = paper.panzoom({ initialZoom: 0, maxZoom: 2, minZoom: -10 });
-            panzoom.enable()
+            paper.setSize($("#canvas").width(), $("#canvas").height());
         }
 
         var layout = new Layout(paper);
 
         $(function () {
             sizeit();
+            panzoom = paper.panzoom({ initialZoom: 0, maxZoom: 2, minZoom: -10 });
+            panzoom.enable()
+
             $(window).resize(sizeit);
         });
 
@@ -106,6 +122,10 @@
                 }, 5000);
             }
             layout.LoadLayout(reload);
+        });
+
+        $("svg").on("mouseover", ".track", function () {
+            $(this).find("path").attr("fill", "#fff");
         });
     </script>
 

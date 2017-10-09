@@ -23,11 +23,12 @@ var StraightTrack = Track.extend('StraightTrack', {
         if (this.image != undefined)
             this.image.clear();
         this.image = this.options.p.group();
+        this.image.node.setAttribute("class", "track");
 
         var track = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
 		var background = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
 
-        this.image.push(this.options.p.path(background).attr({ fill: '#888', stroke: 'none' }));
+        this.image.push(this.options.p.path(background).attr({ stroke: 'none' }));
         this.image.push(this.options.p.path(track).attr({ stroke: '#CCC' }));
 
 		if (!!layout.options.ShowEndpoints) {

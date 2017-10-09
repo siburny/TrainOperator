@@ -1,5 +1,4 @@
-var Class = require("Class.extend"),
-    Track = require("./track"),
+var Track = require("./track"),
     extend = require("extend");
 
 var StraightTrack = Track.extend('StraightTrack', {
@@ -29,6 +28,7 @@ var StraightTrack = Track.extend('StraightTrack', {
     },
 
     toJSON: function () {
+        console.log(this);
         return {
             _type: "StraightTrack",
             id: this.id,
