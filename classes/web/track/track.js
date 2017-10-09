@@ -58,4 +58,4 @@ Track.TRACK_TYPE = Object.freeze({
 Track.INCH_TO_PIXEL = 20;
 Track.TRACK_WIDTH = 1 * Track.INCH_TO_PIXEL;
 
-module.exports = Track;
+global.Track = Track;

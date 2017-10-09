@@ -74,7 +74,7 @@ var Layout = Class.extend('Layout', {
 	}
 });
 
-module.exports = Layout;
+global.Layout = Layout;
 
 var loop = [],
 	track = {};
