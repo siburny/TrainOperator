@@ -1,5 +1,4 @@
-/* global layout */
-/* global global */
+var Class = require("class.extend");
 var Track = require("./track"),
 	extend = require("extend");
 
@@ -43,7 +42,7 @@ var CurveTrack = Track.extend('CurveTrack', {
 		this.image.push(this.options.p.path(background).attr({ stroke: 'none', fill: '#888' }));
 		this.image.push(this.options.p.path(track).attr({ stroke: '#CCC' }));
 
-		if (!!layout.options.ShowEndpoints) {
+		if (1 || !!layout.options.ShowEndpoints) {
 			var endpoints = this.getEndpoints(true);
 			for (var i = 0; i < endpoints.length; i++) {
 				var arc = this._arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH / 2, endpoints[i].r % 180, - 0.5 * Math.sign(endpoints[i].dy))
@@ -131,4 +130,5 @@ CurveTrack.fromJSON = function (json) {
 	return new CurveTrack(json.options);
 }
 
+//module.exports = CurveTrack;
 global.CurveTrack = CurveTrack;

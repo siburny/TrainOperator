@@ -28,7 +28,6 @@ var StraightTrack = Track.extend('StraightTrack', {
     },
 
     toJSON: function () {
-        console.log(this);
         return {
             _type: "StraightTrack",
             id: this.id,

@@ -1,6 +1,4 @@
-/* global global */
 var Class = require("Class.extend");
-    //Matrix = require("../matrix");
 
 var Track = Class.extend('Track', {
     init: function (paper) {
@@ -9,7 +7,7 @@ var Track = Class.extend('Track', {
             y: 0,
             r: 0,
             p: paper,
-			connections: {}
+            connections: {}
         };
     },
 
@@ -33,7 +31,7 @@ var Track = Class.extend('Track', {
             this.options.r = r;
         }
 
-		this.image.translate(this.options.x, this.options.y);
+        this.image.translate(this.options.x, this.options.y);
         this.image.rotate(this.options.r, 0, 0);
     },
 
@@ -52,10 +50,10 @@ var Track = Class.extend('Track', {
 });
 
 Track.TRACK_TYPE = Object.freeze({
-	STRAIGHT: 1,
-	CURVE: 2
+    STRAIGHT: 1,
+    CURVE: 2
 });
 Track.INCH_TO_PIXEL = 20;
 Track.TRACK_WIDTH = 1 * Track.INCH_TO_PIXEL;
 
-global.Track = Track;
+module.exports = Track;
