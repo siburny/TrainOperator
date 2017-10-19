@@ -2,13 +2,13 @@ var Class = require("Class.extend");
 var Track = require("./track"),
   extend = require("extend");
 
-var StraightTrack = Track.extend('StraightTrack', {
-  init: function (paper, options) {
+class StraightTrack extends Track {
+  constructor(paper, options) {
     if (options == undefined) {
       options = paper;
       paper = undefined;
     }
-    this._super(paper);
+    super(paper);
 
     this.options.l = 1;
 
@@ -17,9 +17,9 @@ var StraightTrack = Track.extend('StraightTrack', {
     }
 
     this.type = Track.TRACK_TYPE.STRAIGHT;
-  },
+  }
 
-  draw: function () {
+  draw() {
     if (this.image != undefined)
       this.image.clear();
     this.image = this.options.p.group();
@@ -43,47 +43,46 @@ var StraightTrack = Track.extend('StraightTrack', {
     }
 
     this.moveTo();
-  },
+  }
 
-  getEndpoints: function () {
+  getEndpoints() {
     var endpoints = [
       { r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2 },
       { r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2 }
     ];
 
     return endpoints;
-  },
+  }
 
-  _getStraightTrackPath: function (l, full) {
+  _getStraightTrackPath(l, full) {
     if (full === undefined) {
       full = false;
     }
 
     var path = [];
-    path.push(["M", -Track.TRACK_WIDTH / 2, l / 2]);
+    path.push(["M", -Track.TRACK_WIDTH * Track.INCH_TO_PIXEL / 2, l / 2]);
     path.push(["l", 0, -l]);
-    path.push([full || this.options.connections[1] == undefined ? "l" : "m", Track.TRACK_WIDTH, 0]);
+    path.push([full || this.options.connections[1] == undefined ? "l" : "m", Track.TRACK_WIDTH * Track.INCH_TO_PIXEL, 0]);
     path.push(["l", 0, l]);
-    path.push([full || this.options.connections[0] == undefined ? "l" : "m", -Track.TRACK_WIDTH, 0]);
+    path.push([full || this.options.connections[0] == undefined ? "l" : "m", -Track.TRACK_WIDTH * Track.INCH_TO_PIXEL, 0]);
     if (full || this.options.connections[1] == undefined)
       path.push(["z"]);
 
     return path;
-  },
+  }
 
-  toJSON: function () {
+  toJSON() {
     return {
       _type: "StraightTrack",
       options: this.options
     }
   }
-});
 
-StraightTrack.fromJSON = function (json) {
-  if (json._type != "StraightTrack")
-    return null;
-  return new StraightTrack(json.options);
+  static fromJSON(json) {
+    if (json._type != "StraightTrack")
+      return null;
+    return new StraightTrack(json.options);
+  }
 }
 
-//module.exports = StraightTrack;
 global.StraightTrack = StraightTrack;

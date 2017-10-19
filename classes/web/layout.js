@@ -1,6 +1,7 @@
 var Track = require("./track/track"),
   StraightTrack = require("./track/straightTrack"),
   CurveTrack = require("./track/curveTrack"),
+  SwitchTrack = require("./track/switchTrack"),
   Class = require("class.extend"),
   extend = require("extend"),
   json = require("json-serialize");

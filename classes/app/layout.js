@@ -3,7 +3,8 @@ var //fs = require('fs'),
 	server = require("../server"),
 	Track = require("./track/track"),
 	StraightTrack = require('./track/straightTrack'),
-	CurveTrack = require('./track/CurveTrack'),
+	CurveTrack = require('./track/curveTrack'),
+	SwitchTrack = require('./track/switchTrack'),
 	Class = require("class.extend"),
 	extend = require("extend");
 
@@ -46,7 +47,7 @@ var Layout = Class.extend('Layout', {
 
 		var id = 2;
 
-		t_p = t1;
+		/*t_p = t1;
 		for (var i = 0; i < 8; i++) {
 			var t = new CurveTrack({ id: id++, d: 54 });
 			t.connectTo(t_p, 0, 1);
@@ -66,7 +67,10 @@ var Layout = Class.extend('Layout', {
 			t.connectTo(t_p, 0, 1);
 			this.AddTrack(t);
 			t_p = t;
-		}
+		}*/
+
+		var s = new SwitchTrack();
+		this.AddTrack(s);
 
 		/*for (var i = 0; i < 3; i++) {
 			var t = new StraightTrack({ id: id++, l: 10 });
