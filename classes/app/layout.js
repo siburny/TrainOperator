@@ -8,15 +8,15 @@ var //fs = require('fs'),
 	Class = require("class.extend"),
 	extend = require("extend");
 
-var Layout = Class.extend('Layout', {
-	init: function () {
+class Layout {
+	constructor() {
 		this._loaded = false;
 		this.track = [];
 		this.options = {};
 		this.LoadLayout();
-	},
+	}
 
-	LoadLayout: function () {
+	LoadLayout() {
 		var self = this;
 		server.db.findOne({ "type": "track" }, function (err, docs) {
 			if (docs == null) {
@@ -39,13 +39,10 @@ var Layout = Class.extend('Layout', {
 				extend(self.options, defauts);
 			}
 		});
-	},
+	}
 
-	LoadDemoTrack: function () {
-		var t1 = new StraightTrack({ id: 1, x: 100, y: 100, r: 30, l: 10 });
-		this.AddTrack(t1);
-
-		var id = 2;
+	LoadDemoTrack() {
+		var id = 1;
 
 		/*t_p = t1;
 		for (var i = 0; i < 8; i++) {
@@ -69,27 +66,34 @@ var Layout = Class.extend('Layout', {
 			t_p = t;
 		}*/
 
-		var s = new SwitchTrack();
+		var s = new SwitchTrack({ id: id++, type: SwitchTrack.SWITCH_TYPE.LEFT });
 		this.AddTrack(s);
 
-		/*for (var i = 0; i < 3; i++) {
-			var t = new StraightTrack({ id: id++, l: 10 });
-			t.connectTo(t_p, 0, 1);
-			this.AddTrack(t);
-			t_p = t;
-		}*/
-	},
 
-	AddTrack: function (track) {
+		return;
+		var t1 = new StraightTrack({ id: id++, x: 100, y: 100, l: 10 });
+		t1.connectTo(s);
+		this.AddTrack(t1);
+
+		t1 = new StraightTrack({ id: id++, x: 100, y: 100, l: 10 });
+		t1.connectTo(s);
+		this.AddTrack(t1);
+
+		var t_p = new StraightTrack({ id: id++, x: 100, y: 100, l: 10 });
+		t_p.connectTo(s);
+		this.AddTrack(t_p);
+	}
+
+	AddTrack(track) {
 		if (!(track instanceof Track))
 			throw new Error("Invalid track class.");
 
 		this.track.push(track);
-	},
-
-	Parse: function (text) {
 	}
-});
+
+	Parse(text) {
+	}
+}
 
 module.exports = Layout;
 

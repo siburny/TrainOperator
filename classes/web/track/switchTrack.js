@@ -20,6 +20,12 @@ class SwitchTrack extends Track {
 	}
 
 
+	static get SWITCH_TYPE() {
+		return {
+			LEFT: 0,
+			RIGHT: 1
+		}
+	}
 	static get CURVES_TO_CIRCLE() {
 		return {
 			36: 12,
@@ -71,20 +77,22 @@ class SwitchTrack extends Track {
 		}
 
 		var anchor = this.getEndpoints(true)[0],
-			a = 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d];
-		var path = ["M", -Track.TRACK_WIDTH * Track.INCH_TO_PIXEL / 2, this.options.l * Track.INCH_TO_PIXEL / 2];
-		var arc_t = this.arcPath((this.options.d - Track.TRACK_WIDTH) * Track.INCH_TO_PIXEL / 2, 0, a);
+			a = 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d],
+			angleM = this.options.type == SwitchTrack.SWITCH_TYPE.LEFT ? 1 : -1;
+			
+		var path = ["M", angleM * Track.TRACK_WIDTH * Track.INCH_TO_PIXEL / 2, this.options.l * Track.INCH_TO_PIXEL / 2];
+		var arc_t = this.arcPath((this.options.d - Track.TRACK_WIDTH) * Track.INCH_TO_PIXEL / 2, -a, a);
 
 		path.push(["l", 0, -this.options.l * Track.INCH_TO_PIXEL]);
-		path.push([full || this.options.connections[1] == undefined ? "l" : "m", Track.TRACK_WIDTH * Track.INCH_TO_PIXEL, 0]);
-		path.push(["l", 0, this.options.l * Track.INCH_TO_PIXEL - (this.options.d + Track.TRACK_WIDTH) * Track.INCH_TO_PIXEL * Math.sin(this.SWITCH_ANGLE * Math.PI / 180) / 2]);
+		path.push([full || this.options.connections[0] == undefined ? "l" : "m", -angleM * Track.TRACK_WIDTH * Track.INCH_TO_PIXEL, 0]);
+		path.push(["l", 0, this.options.l * Track.INCH_TO_PIXEL - (this.options.d + Track.TRACK_WIDTH / 2) * Track.INCH_TO_PIXEL * Math.sin(this.SWITCH_ANGLE * Math.PI / 180) / 2]);
 
-		path.push(this.arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH * Track.INCH_TO_PIXEL / 2, this.SWITCH_ANGLE, a - this.SWITCH_ANGLE));
+		path.push(this.arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH * Track.INCH_TO_PIXEL, (angleM == -1 ? 0 : 1) * 180 - angleM * this.SWITCH_ANGLE, -angleM * (a - this.SWITCH_ANGLE)));
 		path.push([full || this.options.connections[1] == undefined ? "L" : "M", arc_t[arc_t.length - 2] + Track.TRACK_WIDTH * Track.INCH_TO_PIXEL / 2, arc_t[arc_t.length - 1] + this.options.l * Track.INCH_TO_PIXEL / 2]);
-
+		return path;
 		path.push(this.arcPath((this.options.d - Track.TRACK_WIDTH) * Track.INCH_TO_PIXEL / 2, a, -a));
 
-		if (full || this.options.connections[1] == undefined) {
+		if (full || this.options.connections[2] == undefined) {
 			path.push(["z"]);
 		}
 
@@ -114,9 +122,9 @@ class SwitchTrack extends Track {
 				r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2
 			},
 			{
-				dx: Track.INCH_TO_PIXEL * this.options.d / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2,
+				dx: (this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? 1 : -1) * (Track.INCH_TO_PIXEL * this.options.d / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2),
 				dy: Track.INCH_TO_PIXEL * this.options.l / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2,
-				r: 180 + 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d]
+				r: (this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? 1 : -1) * 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d]
 			}
 		];
 

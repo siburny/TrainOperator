@@ -1,15 +1,9 @@
 var Track = require("./track"),
 	extend = require("extend");
 
-var CurvesToCircle = Object.freeze({
-	36: 12,
-	54: 16,
-	72: 16,
-});
-
-var SwitchTrack = Track.extend('SwitchTrack', {
-	init: function (options) {
-		this._super(options);
+class SwitchTrack extends Track {
+	constructor(options) {
+		super(options);
 
 		this.options.d = 36;
 		this.options.l = 10;
@@ -19,54 +13,61 @@ var SwitchTrack = Track.extend('SwitchTrack', {
 		if (options != undefined) {
 			extend(this.options, options)
 		}
-	},
+	}
 
-	getEndpoints: function (notransform) {
-		var a = 360 / CurvesToCircle[this.options.d] / 2;
+
+	static get SWITCH_TYPE() {
+		return {
+			LEFT: 0,
+			RIGHT: 1
+		}
+	}
+	static get CURVES_TO_CIRCLES() {
+		return {
+			36: 12,
+			54: 16,
+			72: 16,
+		}
+	}
+
+
+	getEndpoints(notransform) {
+		var a = 360 / SwitchTrack.CURVES_TO_CIRCLES[this.options.d];
 
 		var endpoints = [
 			{
-				dx: Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos((a - a) * Math.PI / 180) / 2,
-				dy: Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin((a - a) * Math.PI / 180) / 2,
-				r: 0
+				r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2
 			},
 			{
-				dx: 0,
-				dy: -this.options.l * Track.INCH_TO_PIXEL / 2,
-				r: 180
+				r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2
 			},
 			{
-				dx: Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos((a + a) * Math.PI / 180) / 2,
-				dy: Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin((a + a) * Math.PI / 180) / 2,
-				r: 180 + 360 / CurvesToCircle[this.options.d]
+				dx: (this.options.type == SwitchTrack.SWITCH_TYPE.LEFT ? 1 : -1) * (this.options.d * Track.INCH_TO_PIXEL / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180)) / 2,
+				dy: this.options.l * Track.INCH_TO_PIXEL / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2,
+				r: 180 + 360 / SwitchTrack.CURVES_TO_CIRCLES[this.options.d]
 			}
 		];
 
 		if (!!notransform)
 			return endpoints;
 
-		return this._super(endpoints);
-	},
+		return super.getEndpoints(endpoints);
+	}
 
-	toJSON: function () {
+	toJSON() {
 		return {
 			_type: "SwitchTrack",
 			id: this.id,
 			options: this.options
 		}
 	}
-});
+}
 
 SwitchTrack.fromJSON = function (json) {
 	if (json._type != "SwitchTrack")
 		return null;
 	return new SwitchTrack(json.options);
 }
-
-SwitchTrack.SWITCH_TYPE = Object.freeze({
-	LEFT: 0,
-	RIGHT: 1
-});
 
 module.exports = SwitchTrack;
 

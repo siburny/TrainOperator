@@ -1,22 +1,37 @@
-var Class = require("Class.extend");
 var Matrix = require('../matrix');
 
-var Track = Class.extend('Track', {
-    init: function (options) {
+class Track {
+    constructor(options) {
         this.options = {
             x: 0,
             y: 0,
             r: 0,
-			connections: {}
+            connections: {}
         };
 
-        if(!!options && 'id' in options) {
+        if (!!options && 'id' in options) {
             this.id = options.id;
             delete options.id;
         }
-    },
+    }
 
-    moveTo: function (x, y, r) {
+
+    static get TRACK_TYPE() {
+        return {
+            STRAIGHT: 1,
+            CURVE: 2,
+            SWITCH: 3
+        }
+    }
+    static get INCH_TO_PIXEL() {
+        return 20
+    }
+    static get TRACK_WIDTH() {
+        return 1 * Track.INCH_TO_PIXEL;
+    }
+
+
+    moveTo(x, y, r) {
         if (x != undefined && y != undefined && r != undefined) {
             this.options.x = x;
             this.options.y = y;
@@ -25,9 +40,9 @@ var Track = Class.extend('Track', {
 
         this.image.translate(this.options.x, this.options.y);
         this.image.rotate(this.options.r, 0, 0);
-    },
+    }
 
-    connectTo: function (track, number1, number2) {
+    connectTo(track, number1, number2) {
         var thisEndpoints = this.getEndpoints(),
             trackEndpoints = track.getEndpoints();
 
@@ -69,9 +84,9 @@ var Track = Class.extend('Track', {
         track.options.connections[number2] = this.id;
 
         this.endpoints = this.getEndpoints();
-    },
+    }
 
-    getEndpoints: function (endpoints) {
+    getEndpoints(endpoints) {
         var m = new Matrix();
         m.rotate(this.options.r, 0, 0);
 
@@ -87,15 +102,6 @@ var Track = Class.extend('Track', {
 
         return e;
     }
-});
-
-// Global constants
-Track.TRACK_TYPE = Object.freeze({
-    STRAIGHT: 1,
-    CURVE: 2,
-    SWITCH: 3
-});
-Track.INCH_TO_PIXEL = 20;
-Track.TRACK_WIDTH = 1 * Track.INCH_TO_PIXEL;
+}
 
 module.exports = Track;

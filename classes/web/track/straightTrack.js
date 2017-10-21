@@ -25,7 +25,7 @@ class StraightTrack extends Track {
     this.image = this.options.p.group();
     this.image.node.setAttribute("class", "track");
 
-    var track = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
+    var track = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL);
     var background = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
 
     this.image.push(this.options.p.path(background).attr({ stroke: 'none' }));

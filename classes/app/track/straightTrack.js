@@ -1,9 +1,9 @@
 var Track = require("./track"),
     extend = require("extend");
 
-var StraightTrack = Track.extend('StraightTrack', {
-    init: function (options) {
-        this._super(options);
+class StraightTrack extends Track {
+    constructor(options) {
+        super(options);
 
         //default
         this.options.l = 1;
@@ -13,9 +13,9 @@ var StraightTrack = Track.extend('StraightTrack', {
         }
 
         this.type = Track.TRACK_TYPE.STRAIGHT;
-    },
+    }
 
-    getEndpoints: function (notransform) {
+    getEndpoints(notransform) {
         var endpoints = [
             { r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2 },
             { r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2 }
@@ -24,17 +24,17 @@ var StraightTrack = Track.extend('StraightTrack', {
 		if (!!notransform)
 			return endpoints;
 
-		return this._super(endpoints);
-    },
+		return super.getEndpoints(endpoints);
+    }
 
-    toJSON: function () {
+    toJSON() {
         return {
             _type: "StraightTrack",
             id: this.id,
             options: this.options
         }
     }
-}, 'StraightTrack');
+}
 
 StraightTrack.fromJSON = function (json) {
     if (json._type != "StraightTrack")
