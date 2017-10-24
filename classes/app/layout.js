@@ -66,9 +66,46 @@ class Layout {
 			t_p = t;
 		}*/
 
-		var s = new SwitchTrack({ id: id++, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		var s_o;
+		var s = new SwitchTrack({ id: id++, d: 36, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s_o = s;
+
+		var s = new SwitchTrack({ id: id++, d: 36, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s.connectTo(s_o, 2, 0);
+
+		var s = new SwitchTrack({ id: id++, d: 36, x: 200, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s_o = s;
+
+		var s = new SwitchTrack({ id: id++, d: 36, x: 200, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s.connectTo(s_o, 2, 1);
+
+		var s = new SwitchTrack({ id: id++, d: 36, x: 400, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s_o = s;
+
+		var s = new SwitchTrack({ id: id++, d: 36, x: 300, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		s.connectTo(s_o, 2, 2);
+		
+		
+		return;
+		var s = new SwitchTrack({ id: id++, d: 54, x: 200, type: SwitchTrack.SWITCH_TYPE.LEFT });
+		this.AddTrack(s);
+		//s.connectTo(s_o, 0, 1);
+		
+		var s = new SwitchTrack({ id: id++, d: 54, x: 300, type: SwitchTrack.SWITCH_TYPE.RIGHT });
+		this.AddTrack(s);
+		//s.connectTo(s_o, 1);
+		
+		var s = new SwitchTrack({ id: id++, d: 72, x: 400, type: SwitchTrack.SWITCH_TYPE.LEFT });
 		this.AddTrack(s);
 
+		var s = new SwitchTrack({ id: id++, d: 72, x: 500, type: SwitchTrack.SWITCH_TYPE.RIGHT });
+		this.AddTrack(s);
 
 		return;
 		var t1 = new StraightTrack({ id: id++, x: 100, y: 100, l: 10 });

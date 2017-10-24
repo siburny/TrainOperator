@@ -71,9 +71,9 @@ class Track {
         var anchor2 = trackEndpoints[number2];
 
         this.options.r = track.options.r;
-        if (anchor1.r + anchor2.r != 180) {
-            this.options.r += 180 + anchor1.r + anchor2.r;
-        }
+        //if (anchor1.r - anchor2.r != 180) {
+            this.options.r += 180 + anchor1.r - anchor2.r;
+        //}
         this.options.r %= 360;
         anchor1 = this.getEndpoints()[number1];
 

@@ -22,7 +22,7 @@ class SwitchTrack extends Track {
 			RIGHT: 1
 		}
 	}
-	static get CURVES_TO_CIRCLES() {
+	static get CURVES_TO_CIRCLE() {
 		return {
 			36: 12,
 			54: 16,
@@ -32,19 +32,23 @@ class SwitchTrack extends Track {
 
 
 	getEndpoints(notransform) {
-		var a = 360 / SwitchTrack.CURVES_TO_CIRCLES[this.options.d];
+		var a = 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d];
 
 		var endpoints = [
 			{
-				r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2
+				dx: 0,
+				dy: -this.options.l * Track.INCH_TO_PIXEL / 2,
+				r: 0
 			},
 			{
-				r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2
+				dx: 0,
+				dy: this.options.l * Track.INCH_TO_PIXEL / 2,
+				r: 180
 			},
 			{
-				dx: (this.options.type == SwitchTrack.SWITCH_TYPE.LEFT ? 1 : -1) * (this.options.d * Track.INCH_TO_PIXEL / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180)) / 2,
-				dy: this.options.l * Track.INCH_TO_PIXEL / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2,
-				r: 180 + 360 / SwitchTrack.CURVES_TO_CIRCLES[this.options.d]
+				dx: (this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? 1 : -1) * (Track.INCH_TO_PIXEL * this.options.d / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2),
+				dy: Track.INCH_TO_PIXEL * this.options.l / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2,
+				r: this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? -360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d] : 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d]
 			}
 		];
 
