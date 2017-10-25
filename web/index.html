@@ -94,8 +94,8 @@
     <div class="mdc-dialog__surface">
       <section id="my-mdc-dialog-description" class="mdc-dialog__body">
         <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--fullwidth">
-          <textarea id="full-width-textarea" class="mdc-textfield__input" rows="20"></textarea>
-          <label for="full-width-textarea" class="mdc-textfield__label">Paste XML code here</label>
+          <textarea id="mdc-dialog-parsecode-code" class="mdc-textfield__input" rows="20"></textarea>
+          <label for="mdc-dialog-parsecode-code" class="mdc-textfield__label">Paste XML code here</label>
         </div>
       </section>
       <footer class="mdc-dialog__footer">
@@ -181,8 +181,11 @@
       dialog.show();
     });
 
+    mdc.textfield.MDCTextfield.attachTo(document.querySelector('.mdc-textfield'));
+
     document.querySelector('#mdc-dialog-parcecode-parse').addEventListener('click', function(evt) {
-      $.post('/qwe/', { 'xml': 'qwe' }, function(data) {
+      $.post('/api/ParseLayout', { 'xml': $('#mdc-dialog-parsecode-code').val() }, function(data) {
+        console.log(data);
       }, 'json');
       //dialog.close();
     });

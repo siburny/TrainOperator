@@ -10,6 +10,9 @@ function start() {
 	app.use("/api/LoadLayout", function (req, res) {
 		res.json(module.exports.layout);
 	});
+	app.use("/api/ParseLayout", function (req, res) {
+		res.json(module.exports.layout);
+	});
 
 	var server = app.listen(3000, function () {
 		var host = server.address().address;
