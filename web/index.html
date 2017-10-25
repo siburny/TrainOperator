@@ -80,7 +80,8 @@
         <span class="mdc-toolbar__title catalog-title">Train Control v0.1</span>
       </section>
       <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
-          <a class="material-icons rail-findblocks mdc-toolbar__icon" aria-label="Compare" alt="Compare">compare</a>
+        <a class="material-icons mdc-toolbar__icon" id="rail-findblocks">compare</a>
+        <a class="material-icons mdc-toolbar__icon" id="rail-parsecode">code</a>
       </section>
     </div>
   </header>
@@ -88,6 +89,21 @@
   <main class="demo-main">
     <div id="canvas"></div>
   </main>
+
+  <aside class="mdc-dialog" id="mdc-dialog-parcecode">
+    <div class="mdc-dialog__surface">
+      <section id="my-mdc-dialog-description" class="mdc-dialog__body">
+        <div class="mdc-textfield mdc-textfield--textarea mdc-textfield--fullwidth">
+          <textarea id="full-width-textarea" class="mdc-textfield__input" rows="20"></textarea>
+          <label for="full-width-textarea" class="mdc-textfield__label">Paste XML code here</label>
+        </div>
+      </section>
+      <footer class="mdc-dialog__footer">
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__footer__button--cancel">Cancel</button>
+        <button type="button" class="mdc-button mdc-dialog__footer__button mdc-dialog__action" id="mdc-dialog-parcecode-parse">Parse</button>
+      </footer>
+    </div>
+  </aside>
 
   <script>
     $(function () {
@@ -138,6 +154,9 @@
         layout.LoadLayout(reload);
       });
 
+      $(function () {
+      });
+
       $("svg").on("mouseover", ".track", function () {
         $(this).find("path").attr("fill", "#fff");
       });
@@ -153,6 +172,21 @@
     document.querySelector('.demo-menu').addEventListener('click', function () {
       drawer.open = !drawer.open;
     });
+
+    const MDCDialog = mdc.dialog.MDCDialog;
+    const dialog = new MDCDialog(document.querySelector('#mdc-dialog-parcecode'));
+
+    document.querySelector('#rail-parsecode').addEventListener('click', function (evt) {
+      dialog.lastFocusedTarget = evt.target;
+      dialog.show();
+    });
+
+    document.querySelector('#mdc-dialog-parcecode-parse').addEventListener('click', function(evt) {
+      $.post('/qwe/', { 'xml': 'qwe' }, function(data) {
+      }, 'json');
+      //dialog.close();
+    });
+
   </script>
 </body>
 
