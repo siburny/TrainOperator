@@ -42,7 +42,7 @@ class CurveTrack extends Track {
 			{
 				dx: Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos((a + a) * Math.PI / 180) / 2,
 				dy: Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin((a + a) * Math.PI / 180) / 2,
-				r: 180 + 360 / CurveTrack.CURVES_TO_CIRCLE[this.options.d]
+				r: 180 - 360 / CurveTrack.CURVES_TO_CIRCLE[this.options.d]
 			}
 		];
 

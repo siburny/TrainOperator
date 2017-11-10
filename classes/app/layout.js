@@ -6,12 +6,13 @@ var //fs = require('fs'),
 	CurveTrack = require('./track/curveTrack'),
 	SwitchTrack = require('./track/switchTrack'),
 	Class = require("class.extend"),
-	extend = require("extend");
+	extend = require("extend"),
+	utils = require('./utils');
 
 class Layout {
 	constructor() {
 		this._loaded = false;
-		this.track = [];
+		this.tracks = [];
 		this.options = {};
 		this.LoadLayout();
 	}
@@ -90,17 +91,17 @@ class Layout {
 		var s = new SwitchTrack({ id: id++, d: 36, x: 300, type: SwitchTrack.SWITCH_TYPE.LEFT });
 		this.AddTrack(s);
 		s.connectTo(s_o, 2, 2);
-		
-		
+
+
 		return;
 		var s = new SwitchTrack({ id: id++, d: 54, x: 200, type: SwitchTrack.SWITCH_TYPE.LEFT });
 		this.AddTrack(s);
 		//s.connectTo(s_o, 0, 1);
-		
+
 		var s = new SwitchTrack({ id: id++, d: 54, x: 300, type: SwitchTrack.SWITCH_TYPE.RIGHT });
 		this.AddTrack(s);
 		//s.connectTo(s_o, 1);
-		
+
 		var s = new SwitchTrack({ id: id++, d: 72, x: 400, type: SwitchTrack.SWITCH_TYPE.LEFT });
 		this.AddTrack(s);
 
@@ -125,10 +126,129 @@ class Layout {
 		if (!(track instanceof Track))
 			throw new Error("Invalid track class.");
 
-		this.track.push(track);
+		this.tracks.push(track);
 	}
 
-	Parse(text) {
+	GetTrack(id) {
+		for (var j = 0; j < this.tracks.length; j++) {
+			if (this.tracks[j].id == id) {
+				return this.tracks[j];
+			}
+		}
+
+		return null;
+	}
+
+	ClearLayout() {
+		this.tracks = [];
+		this._loaded = true;
+	}
+
+	Parse(xml, callback) {
+		var parseString = require('xml2js').parseString;
+		console.log('Parsing started.');
+		var self = this;
+
+		parseString(xml, { explicitArray: false }, function (err, data) {
+			if (err) {
+				console.log('Error parsing XML', err);
+			} else {
+				let scale = data.layout.$.scaleX / 2.54;
+				self.ClearLayout();
+
+				if (data.layout && data.layout.parts && data.layout.parts.part) {
+					//Flip tracks
+					for (let i = 0; i < data.layout.parts.part.length; i++) {
+						let part = data.layout.parts.part[i];
+						let id = part.endpointNrs.endpointNr[0];
+
+						for (let j = 0; j < data.layout.endpoints.endpoint.length; j++) {
+							let endpoint = data.layout.endpoints.endpoint[j];
+							if (endpoint.$.nr == id) {
+
+								let coord = endpoint.$.coord.substring(0, endpoint.$.coord.lastIndexOf(','));
+								switch (part.$.type) {
+									case "Straight":
+										if (coord != part.drawing.line.$.pt1) {
+											part.endpointNrs.endpointNr.reverse();
+										}
+										break;
+									case "Curve":
+										if (coord != part.drawing.arc.$.pt1) {
+											part.endpointNrs.endpointNr.reverse();
+										}
+										break;
+								}
+								break;
+							}
+						}
+					}
+
+					let x = 0;
+					let t;
+					for (var i = 0; i < data.layout.parts.part.length; i++) {
+						var part = data.layout.parts.part[i];
+						switch (part.$.type) {
+							case "Straight":
+								let l = Math.round(utils.Distance(part.drawing.line.$.pt1, part.drawing.line.$.pt2) * scale * 8) / 8;
+								t = new StraightTrack({ l: l, id: i, x: x });
+								self.AddTrack(t);
+								x += 20;
+								break;
+							case "Curve":
+								let d = Math.round(part.drawing.arc.$.radius * scale * 8) / 4;
+								t = new CurveTrack({ d: d, id: i, x: x });
+								self.AddTrack(t);
+								x += 20;
+								break;
+						}
+					}
+
+					for (var i = 0; i < self.tracks.length; i++) {
+						let track1 = self.tracks[i];
+						let part1 = data.layout.parts.part[self.tracks[i].id];
+
+						for (var e = 0; e < part1.endpointNrs.endpointNr.length; e++) {
+							let ep1 = part1.endpointNrs.endpointNr[e];
+							let ep2;
+							let track2;
+
+							for (var conn in data.layout.connections.connection) {
+								if (data.layout.connections.connection[conn].$.endpoint1 == ep1) {
+									ep2 = data.layout.connections.connection[conn].$.endpoint2;
+									break;
+								}
+								else if (data.layout.connections.connection[conn].$.endpoint2 == ep1) {
+									ep2 = data.layout.connections.connection[conn].$.endpoint1;
+									break;
+								}
+							}
+
+							var i2;
+							if (ep2) {
+								for (var j in data.layout.parts.part) {
+									if (data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2) != -1) {
+										track2 = self.GetTrack(j);
+										if (track2) {
+											track2.connectTo(track1, data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2), e);
+										} else {
+											console.log('Track not found:', j);
+										}
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+			console.log('Parsing ended.');
+			if (callback) {
+				callback(data);
+			}
+		});
 	}
 }
 

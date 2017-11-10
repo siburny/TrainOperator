@@ -50,7 +50,7 @@ class SwitchTrack extends Track {
 		this.image.push(this.options.p.path(background).attr({ stroke: 'none', fill: '#888' }));
 		this.image.push(this.options.p.path(track).attr({ stroke: '#CCC' }));
 
-		if (1 /*|| !!layout.options.ShowEndpoints*/) {
+		if (0 /*|| !!layout.options.ShowEndpoints*/) {
 			var endpoints = this.getEndpoints(true);
 			for (var i = 0; i < endpoints.length; i++) {
 				var arc = this.arcPath(this.options.d * Track.INCH_TO_PIXEL / 2 + Track.TRACK_WIDTH / 2, endpoints[i].r % 180, - 0.5 * Math.sign(endpoints[i].dy))
