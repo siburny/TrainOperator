@@ -71,14 +71,14 @@ class Track {
         var anchor2 = trackEndpoints[number2];
 
         this.options.r = track.options.r;
-        //if (anchor1.r - anchor2.r != 180) {
-            this.options.r += 180 + anchor1.r - anchor2.r;
-        //}
+        this.options.r += 180 + anchor1.r - anchor2.r;
         this.options.r %= 360;
         anchor1 = this.getEndpoints()[number1];
 
-        this.options.x = track.options.x + anchor2.dx - anchor1.dx;
-        this.options.y = track.options.y + anchor2.dy - anchor1.dy;
+        //this.options.x = track.options.x + anchor2.dx - anchor1.dx;
+        //this.options.y = track.options.y + anchor2.dy - anchor1.dy;
+        let dx = track.options.x + anchor2.dx - anchor1.dx,
+            dy = track.options.y + anchor2.dy - anchor1.dy;
 
         this.options.connections[number1] = track.id;
         track.options.connections[number2] = this.id;

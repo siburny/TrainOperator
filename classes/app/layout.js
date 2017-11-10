@@ -144,6 +144,28 @@ class Layout {
 		this._loaded = true;
 	}
 
+	GetConnected(start_node) {
+		let ret = [start_node];
+		let found = true;
+
+		while (found) {
+			found = false;
+			for (let n = 0; n < ret.length; n++) {
+				let node = ret[n];
+				for (let e = 0; e < node.options.connections.length; e++) {
+					let tr = this.GetTrack(node.options.connections[e]);
+					if (ret.findIndex(item => item.id == tr.id) == -1) {
+						ret.push(tr);
+						found = true;
+					}
+				}
+			}
+		}
+		
+		ret.splice(0, 1)
+		return ret;
+	}
+
 	Parse(xml, callback) {
 		var parseString = require('xml2js').parseString;
 		console.log('Parsing started.');
@@ -231,6 +253,10 @@ class Layout {
 										track2 = self.GetTrack(j);
 										if (track2) {
 											track2.connectTo(track1, data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2), e);
+
+											let q = self.GetConnected(track2);
+											console.log('*** found ************************************');
+											console.log(q);
 										} else {
 											console.log('Track not found:', j);
 										}
