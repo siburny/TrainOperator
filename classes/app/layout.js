@@ -196,8 +196,22 @@ class Layout {
 										}
 										break;
 									case "Curve":
-										if (coord != part.drawing.arc.$.pt1) {
-											part.endpointNrs.endpointNr.reverse();
+										break;
+									case "LeftRegularTurnout":
+									case "RightRegularTurnout":
+										if (coord != part.drawing.line.$.pt1 && coord != part.drawing.arc.$.pt1) {
+											let q = "Qwe";
+										} else {
+											if (coord != part.drawing.line.$.pt1) {
+												let t = part.endpointNrs.endpointNr[0];
+												part.endpointNrs.endpointNr[0] = part.endpointNrs.endpointNr[1];
+												part.endpointNrs.endpointNr[1] = t;
+											}
+											if (coord != part.drawing.arc.$.pt1) {
+												let t = part.endpointNrs.endpointNr[0];
+												part.endpointNrs.endpointNr[0] = part.endpointNrs.endpointNr[2];
+												part.endpointNrs.endpointNr[2] = t;
+											}
 										}
 										break;
 								}
@@ -207,21 +221,33 @@ class Layout {
 					}
 
 					let x = 0;
-					let t;
+					let t, l, d;
 					for (var i = 0; i < data.layout.parts.part.length; i++) {
 						var part = data.layout.parts.part[i];
 						switch (part.$.type) {
 							case "Straight":
-								let l = Math.round(utils.Distance(part.drawing.line.$.pt1, part.drawing.line.$.pt2) * scale * 8) / 8;
+								l = Math.round(utils.Distance(part.drawing.line.$.pt1, part.drawing.line.$.pt2) * scale * 8) / 8;
 								t = new StraightTrack({ l: l, id: i, x: x });
 								self.AddTrack(t);
 								x += 20;
 								break;
 							case "Curve":
-								let d = Math.round(part.drawing.arc.$.radius * scale * 8) / 4;
+								d = Math.round(part.drawing.arc.$.radius * scale * 8) / 4;
 								t = new CurveTrack({ d: d, id: i, x: x });
 								self.AddTrack(t);
 								x += 20;
+								break;
+							case "LeftRegularTurnout":
+								d = Math.round(part.drawing.arc.$.radius * scale * 8) / 4;
+								l = Math.round(utils.Distance(part.drawing.line.$.pt1, part.drawing.line.$.pt2) * scale * 8) / 8;
+								t = new SwitchTrack({ id: i, type: SwitchTrack.SWITCH_TYPE.LEFT, d: d, l: l });
+								self.AddTrack(t);
+								break;
+							case "RightRegularTurnout":
+								d = Math.round(part.drawing.arc.$.radius * scale * 8) / 4;
+								l = Math.round(utils.Distance(part.drawing.line.$.pt1, part.drawing.line.$.pt2) * scale * 8) / 8;
+								t = new SwitchTrack({ id: i, type: SwitchTrack.SWITCH_TYPE.RIGHT, d: d, l: l });
+								self.AddTrack(t);
 								break;
 						}
 					}
