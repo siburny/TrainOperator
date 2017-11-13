@@ -168,7 +168,6 @@ class Layout {
 
 	Parse(xml, callback) {
 		var parseString = require('xml2js').parseString;
-		console.log('Parsing started.');
 		var self = this;
 
 		parseString(xml, { explicitArray: false }, function (err, data) {
@@ -179,46 +178,38 @@ class Layout {
 				self.ClearLayout();
 
 				if (data.layout && data.layout.parts && data.layout.parts.part) {
-					//Flip tracks
+					//Flip 
 					for (let i = 0; i < data.layout.parts.part.length; i++) {
 						let part = data.layout.parts.part[i];
-						let id = part.endpointNrs.endpointNr[0];
-
-						for (let j = 0; j < data.layout.endpoints.endpoint.length; j++) {
-							let endpoint = data.layout.endpoints.endpoint[j];
-							if (endpoint.$.nr == id) {
-
-								let coord = endpoint.$.coord.substring(0, endpoint.$.coord.lastIndexOf(','));
-								switch (part.$.type) {
-									case "Straight":
-										if (coord != part.drawing.line.$.pt1) {
-											part.endpointNrs.endpointNr.reverse();
-										}
-										break;
-									case "Curve":
-										break;
-									case "LeftRegularTurnout":
-									case "RightRegularTurnout":
-										if (coord != part.drawing.line.$.pt1 && coord != part.drawing.arc.$.pt1) {
-											let q = "Qwe";
-										} else {
-											if (coord != part.drawing.line.$.pt1) {
-												let t = part.endpointNrs.endpointNr[0];
-												part.endpointNrs.endpointNr[0] = part.endpointNrs.endpointNr[1];
-												part.endpointNrs.endpointNr[1] = t;
-											}
-											if (coord != part.drawing.arc.$.pt1) {
-												let t = part.endpointNrs.endpointNr[0];
-												part.endpointNrs.endpointNr[0] = part.endpointNrs.endpointNr[2];
-												part.endpointNrs.endpointNr[2] = t;
-											}
-										}
-										break;
+						part.endpointNrs.coord = {};
+						for (let k = 0; k < part.endpointNrs.endpointNr.length; k++) {
+							for (let j = 0; j < data.layout.endpoints.endpoint.length; j++) {
+								if (data.layout.endpoints.endpoint[j].$.nr == part.endpointNrs.endpointNr[k]) {
+									part.endpointNrs.coord[data.layout.endpoints.endpoint[j].$.coord.substring(0, data.layout.endpoints.endpoint[j].$.coord.lastIndexOf(','))] = part.endpointNrs.endpointNr[k];
 								}
-								break;
 							}
 						}
 					}
+					for (let i = 0; i < data.layout.parts.part.length; i++) {
+						let part = data.layout.parts.part[i];
+						part.endpointNrs.endpointNr = [];
+						if (part.drawing.line) {
+							part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.line.$.pt1]);
+							part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.line.$.pt2]);
+							if (part.drawing.arc) {
+								if (part.drawing.line.$.pt1 == part.drawing.arc.$.pt1) {
+									part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.arc.$.pt2]);
+								} else {
+									part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.arc.$.pt1]);
+								}
+							}
+						} else if (part.drawing.arc) {
+							part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.arc.$.pt1]);
+							part.endpointNrs.endpointNr.push(part.endpointNrs.coord[part.drawing.arc.$.pt2]);
+						}
+					}
+
+
 
 					let x = 0;
 					let t, l, d;
@@ -253,6 +244,7 @@ class Layout {
 					}
 
 					// connect parsed tracks
+					var c = 0;
 					for (var i = 0; i < self.tracks.length; i++) {
 						let track1 = self.tracks[i];
 						let part1 = data.layout.parts.part[self.tracks[i].id];
@@ -278,7 +270,12 @@ class Layout {
 								for (var j in data.layout.parts.part) {
 									if (data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2) != -1) {
 										track2 = self.GetTrack(j);
+
 										if (track2) {
+											if (track2.options.connections.indexOf(track1.id) != -1)
+												break;
+
+											//if (++c > 10) break;
 											track1.connectTo(track2, e, data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2));
 										} else {
 											console.log('Track not found:', j);
@@ -338,7 +335,6 @@ class Layout {
 				}
 			}
 
-			console.log('Parsing ended.');
 			if (callback) {
 				callback(data);
 			}

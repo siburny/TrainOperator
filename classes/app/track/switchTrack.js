@@ -36,19 +36,15 @@ class SwitchTrack extends Track {
 
 		var endpoints = [
 			{
-				dx: 0,
-				dy: -this.options.l * Track.INCH_TO_PIXEL / 2,
-				r: 0
+				r: 0, dx: 0, dy: this.options.l * Track.INCH_TO_PIXEL / 2
 			},
 			{
-				dx: 0,
-				dy: this.options.l * Track.INCH_TO_PIXEL / 2,
-				r: 180
+				r: 180, dx: 0, dy: -this.options.l * Track.INCH_TO_PIXEL / 2
 			},
 			{
 				dx: (this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? 1 : -1) * (Track.INCH_TO_PIXEL * this.options.d / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.cos(a * Math.PI / 180) / 2),
 				dy: Track.INCH_TO_PIXEL * this.options.l / 2 - Track.INCH_TO_PIXEL * this.options.d * Math.sin(a * Math.PI / 180) / 2,
-				r: this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? -360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d] : 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d]
+				r: this.options.type == SwitchTrack.SWITCH_TYPE.RIGHT ? 180 - 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d] : 180 + 360 / SwitchTrack.CURVES_TO_CIRCLE[this.options.d]
 			}
 		];
 

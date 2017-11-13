@@ -6,7 +6,7 @@ class Track {
             x: 0,
             y: 0,
             r: 0,
-            connections: {}
+            connections: []
         };
 
         if (!!options && 'id' in options) {

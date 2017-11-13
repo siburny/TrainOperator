@@ -24,6 +24,7 @@ class StraightTrack extends Track {
       this.image.clear();
     this.image = this.options.p.group();
     this.image.node.setAttribute("class", "track");
+    this.image.node.setAttribute("id", this.options.id);
 
     var track = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL);
     var background = this._getStraightTrackPath(this.options.l * Track.INCH_TO_PIXEL, true);
@@ -81,6 +82,9 @@ class StraightTrack extends Track {
   static fromJSON(json) {
     if (json._type != "StraightTrack")
       return null;
+    if (!!json.id) {
+      json.options.id = json.id;
+    }
     return new StraightTrack(json.options);
   }
 }
