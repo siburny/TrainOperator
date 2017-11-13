@@ -152,7 +152,7 @@ class Layout {
 			found = false;
 			for (let n = 0; n < ret.length; n++) {
 				let node = ret[n];
-				for (let e = 0; e < node.options.connections.length; e++) {
+				for (let e in node.options.connections) {
 					let tr = this.GetTrack(node.options.connections[e]);
 					if (ret.findIndex(item => item.id == tr.id) == -1) {
 						ret.push(tr);
@@ -161,7 +161,7 @@ class Layout {
 				}
 			}
 		}
-		
+
 		ret.splice(0, 1)
 		return ret;
 	}
@@ -226,6 +226,7 @@ class Layout {
 						}
 					}
 
+					// connect parsed tracks
 					for (var i = 0; i < self.tracks.length; i++) {
 						let track1 = self.tracks[i];
 						let part1 = data.layout.parts.part[self.tracks[i].id];
@@ -252,11 +253,7 @@ class Layout {
 									if (data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2) != -1) {
 										track2 = self.GetTrack(j);
 										if (track2) {
-											track2.connectTo(track1, data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2), e);
-
-											let q = self.GetConnected(track2);
-											console.log('*** found ************************************');
-											console.log(q);
+											track1.connectTo(track2, e, data.layout.parts.part[j].endpointNrs.endpointNr.indexOf(ep2));
 										} else {
 											console.log('Track not found:', j);
 										}
@@ -266,8 +263,53 @@ class Layout {
 							}
 						}
 					}
-				}
 
+					// lay out connected tracks
+					let anchor = true;
+					let startX = 0;
+					while (anchor) {
+
+						// find unanchored piece and place it down
+						anchor = false;
+						for (let a = 0; a < self.tracks.length; a++) {
+							if (!self.tracks[a].anchored) {
+								anchor = self.tracks[a];
+								anchor.anchored = true;
+
+								anchor.options.x = startX;
+								anchor.options.y = 0;
+
+								startX += 100;
+								break;
+							}
+						}
+
+						if (anchor) {
+							let not_anchored = true;
+							while (not_anchored) {
+								not_anchored = false;
+
+								for (let a = 0; a < self.tracks.length; a++) {
+									if (self.tracks[a].anchored) {
+										anchor = self.tracks[a];
+
+										for (let e in anchor.options.connections) {
+											let tr = self.GetTrack(anchor.options.connections[e]);
+											if (!tr.anchored) {
+												tr.repositionTo(anchor);
+												tr.anchored = true;
+
+												not_anchored = true;
+												break;
+											}
+										}
+
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 
 			console.log('Parsing ended.');

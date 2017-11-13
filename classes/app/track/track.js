@@ -75,15 +75,48 @@ class Track {
         this.options.r %= 360;
         anchor1 = this.getEndpoints()[number1];
 
-        //this.options.x = track.options.x + anchor2.dx - anchor1.dx;
-        //this.options.y = track.options.y + anchor2.dy - anchor1.dy;
-        let dx = track.options.x + anchor2.dx - anchor1.dx,
-            dy = track.options.y + anchor2.dy - anchor1.dy;
+        this.options.x = track.options.x + anchor2.dx - anchor1.dx;
+        this.options.y = track.options.y + anchor2.dy - anchor1.dy;
 
         this.options.connections[number1] = track.id;
         track.options.connections[number2] = this.id;
 
         this.endpoints = this.getEndpoints();
+    }
+
+    repositionTo(track) {
+        var thisEndpoints = this.getEndpoints(),
+            trackEndpoints = track.getEndpoints();
+
+        let number1, number2;
+
+        for (var i = 0; i < thisEndpoints.length; i++) {
+            if (this.options.connections[i] == track.id) {
+                number1 = i;
+                break;
+            }
+        }
+        if (number1 == undefined)
+            return;
+        for (var i = 0; i < trackEndpoints.length; i++) {
+            if (track.options.connections[i] == this.id) {
+                number2 = i;
+                break;
+            }
+        }
+        if (number2 == undefined)
+            return;
+
+        var anchor1 = thisEndpoints[number1];
+        var anchor2 = trackEndpoints[number2];
+
+        this.options.r = track.options.r;
+        this.options.r += 180 + anchor1.r - anchor2.r;
+        this.options.r %= 360;
+        anchor1 = this.getEndpoints()[number1];
+
+        this.options.x = track.options.x + anchor2.dx - anchor1.dx;
+        this.options.y = track.options.y + anchor2.dy - anchor1.dy;
     }
 
     getEndpoints(endpoints) {
